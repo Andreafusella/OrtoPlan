@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Utente {
+  id_utente Int @id @default(autoincrement())
+  nome String
+  cognome String
+  credenziali Credenziali?
+  piantagioni Piantagione[]
+  notifiche Notifiche[] 
+}
+
+model Credenziali {
+  id_utente    Int         @id
+  email        String      @unique
+  password     String
+  utente       Utente      @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Piantagione {
+  id_piantagione  Int       @id @default(autoincrement())
+  id_utente       Int
+  nome            String
+  n_slot          Int
+  data_inizio     DateTime
+  id_pianta       Int
+  utente          Utente    @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+  pianta          Pianta    @relation(fields: [id_pianta], references: [id_pianta], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Pianta {
+  id_pianta    Int         @id @default(autoincrement())
+  nome         String
+  t_raccolta   Int
+  t_acqua      Int
+  piantagioni  Piantagione[]
+}
+
+model Notifiche {
+  id_notifica Int @id @default(autoincrement())
+  testo String
+  aperta Boolean  
+  utente Utente @relation(fields: [id_utente], references: [id_utente])
+  id_utente Int
+}

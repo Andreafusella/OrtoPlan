@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro</title>
+    <link rel="stylesheet" href="/style/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <%- include ('components/navbar') %>
+    <!-- ------PRESENTAZIONE-------- -->
+    <div id="presentazione">
+        <h1 class=" mt-9 text-center md:text-5xl text-2xl text-black opacity-80">🤩IL GESTIONALE PERFETTO PER TE🤩</h1>
+        <div class="text-center mx-[10%]">
+            <div class="md:flex items-center justify-center gap-20 mt-10">
+                <img src="./assets/contadino.png" alt="" class="md:h-[300px] h-[200px] md:block m-auto mb-10">
+                <div class="bg-slate-200 p-5 rounded-2xl shadow-2xl">
+                    <h1 class="text-black md:text-2xl text-sm"><a href="#" class="p-1 rounded-2xl text-yellow-400 hover:underline ">Benvenuti su OrtoPlan</a>, la tua nuova compagna di giardinaggio! Con OrtoPlan, registrarsi e fare il login è un gioco da ragazzi. 
+                        Una volta dentro, puoi creare un profilo personale che ti permetterà di gestire tutte le tue piantagioni in un unico posto. 
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mx-[10%]">
+            <div class="md:flex items-center justify-center gap-20">
+                <div class="bg-slate-200 p-5 rounded-2xl shadow-2xl">
+                    <h1 class="text-black md:text-2xl text-sm">OrtoPlan ti aiuta a creare e gestire le tue piantagioni in modo super organizzato
+                    </h1>
+                </div>
+                <img src="./assets/pomodoro.png" alt="" class="md:h-[300px] h-[200px] md:block m-auto">
+            </div>
+        </div>
+
+        <div class="bg-yellow-600">
+            <div class="text-center mx-[10%] pt-10 hidden md:block">
+                <h1 class="md:text-4xl text-xl text-white py-5">Tutto in un'unica app</h1>
+                <div class="bg-slate-200 p-5 rounded-2xl w-[90%] m-auto shadow-2xl">
+                    <div class="md:flex justify-between w-[85%] items-center m-auto">
+                        <div class="w-56 m-auto">
+                            <img src="./assets/campana_notifiche.png" alt="" class="md:h-44 h-32 md:m-auto">
+                            <h1 class="md:text-xl text-stone-400 text-xs">Invio di Notifiche per le tue piantagioni</h1>
+                        </div>
+                        <div class="w-56 m-auto">
+                            <img src="./assets/nuvola.png" alt="" class="md:h-44 h-32 md:m-auto">
+                            <h1 class="md:text-xl text-stone-400 text-xs">Utilizzo di una API per il meteo </h1>
+                        </div>
+                        <div class="w-56 m-auto">
+                            <img src="./assets/3_fragole.png" alt="" class="md:h-44 h-32 md:m-auto">
+                            <h1 class="md:text-xl text-stone-400 text-xs">Crea tutte le pianagioni che preferisci</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:flex justify-center gap-10 pt-10">
+                <img src="./assets/contadino_2_pollici.png" alt="" class="md:h-[300px] h-[200px] m-auto md:m-0">
+                <div class="flex justify-center items-center">
+                    <div id="buttonAreaPrivata" class="flex flex-col items-center justify-center">
+                        <!-- <h1 class="text-white text-2xl mb-3 text-center mt-5 md:mt-0">Entra ora a far parte del nostro team!</h1>
+                        <button class="btn btn-primary text-white mt-5" onclick="openModalRegister()">Registrati qui!</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include ('components/footer') %>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+    <script src="/script/home.js"></script>
+    <script src="/script/navbar.js"></script>
+</body>
+</html>

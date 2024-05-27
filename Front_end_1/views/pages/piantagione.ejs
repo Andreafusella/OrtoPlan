@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piantagioni</title>
+    <link rel="stylesheet" href="/style/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <%- include ('components/navbar_home') %>
+    <div class="mx-10 my-10 flex flex-col">
+        
+        <div class="flex justify-between">
+            <p></p>
+            <button class="btn btn-primary text-white font-bold" onclick="openModalPiantagione()">Nuova Piantagione</button>
+        </div>
+        <div id="piantagioni-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mt-5">
+            
+        </div>
+        
+    </div>
+
+    <dialog id="piantagione" class="modal">
+        <div class="modal-box flex flex-col gap-4 bg-slate-200">
+            <h3 class="font-bold text-xl text-black">Nuova Piantagione</h3>
+            <form id="piantagioneForm" class="flex flex-col gap-4">
+                <h1 class="text-black">Nome</h1>
+                <input id="inputNome" placeholder="Nome" type="text" name="nome" class="input input-bordered w-full bg-white">
+                <h1 class="text-black">Numero Piante</h1>
+                <input id="inputNumeroPiante" placeholder="Scegli un numero" type="number" name="numeroPiante" class="input input-bordered w-full bg-white" min="1" max="25">
+                <h1 class="text-black">Pianta</h1>
+                <select id="inputPianta" placeholder="Scegli una pianta" name="pianta" class="input input-bordered w-full bg-white">
+                </select>
+                <div class="modal-action">
+                    <button type="button" class="btn text-white" onclick="piantagione.close()">
+                        Chiudi
+                    </button>
+                    <button type="submit" class="btn btn-primary text-white">Crea</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+    
+    <%- include ('components/footer') %>
+    <script src="/script/piantagioni.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/validate.js/0.13.1/validate.min.js"></script>
+</body>
+</html>

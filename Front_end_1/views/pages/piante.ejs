@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informazioni Piante</title>
+    <link rel="stylesheet" href="./style/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <%- include ('components/navbar_home') %>
+
+    <h1 class="text-center font-bold my-8 text-3xl text-black">Tutte le Piante</h1>
+    <div id="pianteContainer" class="container mx-auto grid gap-10">
+        <!-- tutte le varie piante generate dal js -->
+    </div>
+
+    <!-- Modal -->
+    <dialog id="modal" class="modal">
+        <div class="modal-box flex flex-col gap-4 bg-slate-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="modalTitle" class="text-2xl font-bold text-black"></h2>
+                <button id="closeModal" class="text-black">&times;</button>
+            </div>
+            <img id="modalImage" src="" alt="" class="h-44 mx-auto mb-4">
+            <p id="modalDescrizione" class="mb-2 text-slate-700"></p>
+            <p id="modalRaccolta" class="mb-2 text-black"></p>
+            <p id="modalAcqua" class="text-black"></p>
+            <div class="modal-action">
+                <button type="button" class="btn text-white" onclick="modal.close()">Chiudi</button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <%- include ('components/footer') %>
+    <script src="/script/piante.js"></script>
+</body>
+</html>

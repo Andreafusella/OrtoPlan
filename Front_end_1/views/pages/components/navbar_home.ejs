@@ -1,0 +1,126 @@
+<div class="drawer">
+    <input id="my-drawer-3" type="checkbox" class="drawer-toggle" /> 
+    <div class="drawer-content flex flex-col">
+      <!-- Navbar -->
+        <div class="w-full navbar bg-yellow-600 h-32 px-5">
+            <div class="flex-none lg:hidden">
+                <label for="my-drawer-3" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </label>
+            </div> 
+            <div class="flex justify-between w-full">
+                <div class="flex items-center justify-center">
+                    <img src="./assets/logo.png" alt="" class="h-24">
+                    <h1 class="text-white md:text-4xl text-base font-bold">OrtoPlan</h1>
+                </div>
+                <div class="flex-none hidden lg:block">
+                    <div class="menu menu-horizontal flex items-center justify-center gap-10">
+                        <!-- Navbar menu content here -->
+                        <div>
+                            <a href="/piante">
+                                <div class="bg-green-500 p-3 rounded-2xl">
+                                    <h1 class="text-center text-xl text-white font-bold">Tutte le piante</h1>
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#">
+                                <div class="bg-green-500 p-3 rounded-2xl">
+                                    <h1 class="text-center text-xl text-white font-bold">Meteo</h1>
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="/piantagione">
+                                <div class="bg-green-500 p-3 rounded-2xl">
+                                    <h1 class="text-center text-xl text-white font-bold">Piantagioni</h1>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                <div class="flex-none hidden lg:block">
+                    <div class="flex gap-4 items-center justify-center">
+                        <a href="/notifiche">
+                            <div>
+                                <img src="/assets/campanella.png" alt="" class="h-10">
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center justify-center">
+                            <div class="flex gap-4">
+                                <div>
+                                    <h1 id="nome_utente" class="text-white text-xl font-bold"></h1>
+                                </div>
+                                <div class="avatar">
+                                    <div class="w-12 rounded-full">
+                                        <a href="#">
+                                            <img src="./assets/profilo.png" class="h-28"/>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button onclick="logout()" class="btn btn-primary text-white font-bold">Logout</button>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <!-- Page content here -->
+        
+    </div> 
+    <div class="drawer-side">
+        <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"></label> 
+        <div class="menu p-4 w-[280px] min-h-full bg-base-200">
+        <!-- Sidebar content here -->
+            <div class="mb-4">
+                <a href="/piante">
+                    <div class="bg-green-500 p-3 rounded-2xl">
+                        <h1 class="text-center text-xl text-white font-bold">Tutte le piante</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="mb-4">
+                <a href="#">
+                    <div class="bg-green-500 p-3 rounded-2xl">
+                        <h1 class="text-center text-xl text-white font-bold">Meteo</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="mb-4">
+                <a href="/piantagione">
+                    <div class="bg-green-500 p-3 rounded-2xl">
+                        <h1 class="text-center text-xl text-white font-bold">Piantagioni</h1>
+                    </div>
+                </a>
+            </div>
+
+            <div class="mt-auto">
+                <a href="#" class="flex items-center justify-center">
+                    <div class="flex gap-4">
+                        <div class="avatar">
+                            <div class="w-12 rounded-full">
+                                <a href="#">
+                                    <img src="./assets/profilo.png" class="h-28"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex justify-center items-center">
+                            <h1 id="nome_utente_sidebar" class="text-white text-xl font-bold"></h1>
+                        </div>
+                        <div>
+                            <button onclick="logout()" class="btn btn-primary text-white font-bold">Logout</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="/script/home2.js"></script>
+    <script src="/script/logout.js"></script>
+</div>

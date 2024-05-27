@@ -1,0 +1,85 @@
+<div class="h-32 bg-yellow-600 flex items-center">
+    <div class="mx-10 flex justify-between w-full">
+
+        <div class="navbar">
+            <div class="navbar-start">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden p-2 border-4 border-yellow-800 rounded-md flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="md:h-10 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-4 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Home</a></li>
+                        <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">About us</a></li>
+                        <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Contattaci</a></li>
+                        <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Candidati</a></li>
+                    </ul>
+                </div>
+                <div class="flex items-center justify-center">
+                    <img src="./assets/logo.png" alt="" class="h-24">
+                    <h1 class="text-white md:text-4xl text-base font-bold">OrtoPlan</h1>
+                </div>
+            </div>
+            <div class="navbar-center hidden lg:flex ">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Home</a></li>
+                    <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">About us</a></li>
+                    <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Contattaci</a></li>
+                    <li><a href="#" class="text-2xl text-white hover:text-amber-500 duration-200 hover:underline">Candidati</a></li>
+                </ul>
+            </div>
+            <div id="button-container" class="navbar-end md:gap-6 gap-2">
+                <!-- <button class="btn btn-primary text-white" onclick="openModalLogin()">Login</button>
+                <button class="btn btn-primary text-white" onclick="openModalRegister()">Registrati</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- register modal -->
+<dialog id="register" class="modal">
+    <div class="modal-box flex flex-col gap-4 bg-slate-200">
+        <h3 class="font-bold text-xl text-black">Registrazione</h3>
+        <form id="registerForm" class="flex flex-col gap-4">
+            <h1 class="text-black">Nome</h1>
+            <input id="inputNome" placeholder="Nome" type="text" name="nome" class="input input-bordered w-full bg-white">
+            <h1 class="text-black">Cognome</h1>
+            <input id="inputCognome" placeholder="Cognome" type="text" name="cognome" class="input input-bordered w-full bg-white">
+            <h1 class="text-black">Email</h1>
+            <input id="inputEmailRegister" placeholder="example@text.com" type="email" name="email" class="input input-bordered w-full bg-white">
+            <h1 class="text-black">Password</h1>
+            <input id="inputPasswordRegister" placeholder="******" type="password" name="password" class="input input-bordered w-full bg-white">
+            <h1 class="text-black">Conferma Password</h1>
+            <input id="inputRepeatPasswordRegister" placeholder="******" type="password" name="conferma_password" class="input input-bordered w-full bg-white">
+            <div class="modal-action">
+                <button type="button" class="btn text-white" onclick="register.close()">
+                Chiudi
+                </button>
+                <button type="submit" class="btn btn-primary text-white">Registrati</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+</dialog>
+<!-- login modal -->
+<dialog id="login" class="modal">
+    <div class="modal-box flex flex-col gap-4 bg-slate-200">
+        <h3 class="font-bold text-xl text-black">Login</h3>
+        <form id="loginForm" class="flex flex-col gap-4">
+            <h1 class="text-black">Email</h1>
+            <input id="inputEmailLogin" placeholder="text@text.com" type="text" name="email" class="input input-bordered w-full bg-white">
+            <h1 class="text-black">Password</h1>
+            <input id="inputPasswordLogin" placeholder="******" type="password" name="password" class="input input-bordered w-full bg-white">
+            <div class="modal-action">
+                <button type="button" class="btn text-white" onclick="login.close()">
+                Chiudi
+                </button>
+                <button type="submit" class="btn btn-primary text-white">Login</button>
+            </div>
+        </form>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+</dialog>
