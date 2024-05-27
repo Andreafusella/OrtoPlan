@@ -3214,6 +3214,10 @@ html:has(.drawer-toggle:checked) {
   padding: 2rem;
 }
 
+.p-\[6px\] {
+  padding: 6px;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;

@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 notifiche.forEach(notifica => {
                     const row = document.createElement('tr');
+                    
 
                     const idCell = document.createElement('td');
                     idCell.textContent = notifica.id_notifica;
@@ -51,7 +52,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     p.classList.add('cursor-pointer', 'text-4xl');
                     p.addEventListener('click', () => {
-                        document.getElementById('modal-text').textContent = notifica.testo;
+
+                        const modalText = document.getElementById('modal-text');
+
+                        while (modalText.firstChild) {
+                            modalText.removeChild(modalText.firstChild);
+                        }
+                        
+                        const titolo = document.createElement('h1');
+
+
+                        titolo.textContent = 'Annaffiare';
+                        titolo.classList.add('text-3xl', 'text-black', 'font-bold', 'mb-3', 'text-center');
+
+                        const testo = document.createElement('h1');
+                        testo.classList.add('text-xl', 'text-black', 'font-bold', 'text-center');
+                        testo.textContent = notifica.testo;
+
+
+                        modalText.appendChild(titolo);
+                        modalText.appendChild(testo);
+                        
                         document.getElementById('modal').classList.remove('hidden');
 
                         notificaSign()
@@ -126,5 +147,6 @@ function closeModal() {
     const backdrop = document.getElementById('modal-backdrop');
     modal.classList.add('hidden');
     backdrop.classList.add('hidden');
+    location.reload();
 }
 
