@@ -121,7 +121,7 @@ function knowAcqua(piante, piantagioni) {
         return t_acqua;
     } else {
         console.log('Pianta non trovata');
-        return null;
+        return 2;
     }
 }
 
@@ -194,11 +194,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const piante = data.piante;
                 const piantagioni = data.piantagioni;
 
-                // Recupera l'ID utente dal localStorage
                 const utente = JSON.parse(localStorage.getItem('utente'));
                 const id_utente = utente.utente.id_utente;
-
-                // Filtra le piantagioni per l'ID utente
+                
                 const piantagioniUtente = piantagioni.filter(piantagione => piantagione.id_utente === id_utente);
 
                 piantagioniUtente.forEach((piantagione, index) => {
@@ -234,6 +232,38 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const raccoltaAcqua = knowAcqua(piante, piantagione); // finireeeee
                     annaffiatoioText.textContent = `tra ${raccoltaAcqua} giorni`;
                     annaffiatoioText.classList.add('text-lg', 'font-bold');
+
+                    //notifica annaffiare
+                    notificaAcqua(id_utente);
+                    async function notificaAcqua(id_utente){
+                        if (raccoltaAcqua == 2) {
+                            try{
+                                let id_piantagione = piantagione.id_piantagione;
+                                let nome = piantagione.nome_piantagione;
+                                let giorni = 1;
+                                const res = await fetch('http://localhost:8000/notificheAdd', {
+                                    method: 'PUT',
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        id_piantagione,
+                                        nome,
+                                        id_utente,
+                                        giorni,
+                                    }),
+                                })
+
+                                if (res.status == 201) {
+                                    //bdhasbhfa
+                                }
+                            } catch (error) {
+                                console.log(error);
+                                console.log('errore notifica');
+                            }
+                        }
+
+                    }
 
                     if (raccoltaAcqua < 2) {
                         annaffiatoioText.classList.add('text-orange-400');

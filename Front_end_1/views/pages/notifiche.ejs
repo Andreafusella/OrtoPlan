@@ -14,22 +14,36 @@
     <div id="tabella">
         <div class="flex flex-col items-center justify-center">
             <div class="m-10 bg-gray-300 p-5 rounded-2xl">
-                <table class="table table-zebra">
-                    <thead>
-                        <tr class="text-xl text-black font-bold">
+                <table class="table">
+                    <thead class="text-2xl text-white font-bold text-center">
+                        <tr>
                             <th>Id</th>
                             <th>Piantagione</th>
-                            <th>Testo</th>
+                            <th>Azione</th>
                         </tr>
                     </thead>
-                    <tbody>
-    
+                    <tbody class="text-lg text-slate-900 font-bold text-center">
                     </tbody>
                 </table>
             </div>
         </div>
-
     </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 hidden z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="modal-box flex flex-col gap-4 bg-white p-8 rounded-lg shadow-lg relative">
+            <span id="close-modal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-800 cursor-pointer">&times;</span>
+            <p id="modal-text" class="mt-4"></p>
+            <div class="modal-action flex justify-between mt-4">
+                <div></div>
+                <button type="button" class="btn text-white" onclick="closeModal()">
+                    Chiudi
+                </button>
+            </div>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop fixed inset-0 flex items-center justify-center"></form>
+    
 
     <%- include ('components/footer') %>
     
