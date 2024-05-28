@@ -28,105 +28,128 @@ export default function notificheRouting(app){
 
 
     //notifiche raccolta
-    app.put('/notificheAddWater', async (req, res) => {
+    app.post('/notificheAddRaccolta', async (req, res) => {
         try {
-            if (+req.body.giorni == 10){
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        nome_piantagione: req.body.nome,
-                        testo: `Tra 10 giorni devi raccogliere: {nome pianta}, della raccolta nella piantagione: ${req.body.nome}`
-                    }
-                });
-                res.status(201);
-                res.json(notifica)
+            const id_utente = +req.body.id_utente;
+            const id_piantagione = +req.body.id_piantagione;
+            const nome_piantagione = req.body.nome;
+        
 
-            } else if (+req.body.giorni == 2){
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        nome_piantagione: req.body.nome,
-                        testo: `Tra 2 giorni devi raccogliere: {nome pianta}, della raccolta nella piantagione: ${req.body.nome}`
-                    }
-                });
-                res.status(201);
-                res.json(notifica)
-                
-            } else if (+req.body.giorni == 0){
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        nome_piantagione: req.body.nome,
-                        testo: `E' ora della raccolta di {nome pianta}, nella piantagione: ${req.body.nome}`
-                    }
-                });
-                res.status(201);
-                res.json(notifica)
-
-            }
-
-        } catch(error) {
-            console.log(error);
-            console.log('errore notifica raccolta');
-        }
-    })
-
-    //notifiche acqua
-    app.put('/notificheAddWater', async (req, res) => {
-        try {
-            if (+req.body.giorni == 2){
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        testo: `Ricordati di annaffiare la piantagione: ${req.body.nome} tra ${+req.body.giorni} giorni`,
-                        nome_piantagione: req.body.nome,
-                    }
-                })
-                
-                res.status(201);
-                res.json(notifica)
-
-            } else if (+req.body.giorni == 0){
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        testo: `E' il momento di annaffiare la piantagione: ${req.body.nome}`,
-                        nome_piantagione: req.body.nome,
-                    }
-                })
-                
-                res.status(201);
-                res.json(notifica)
-
-            } else if (+req.body.giorni < 0){
-                if(+req.body.giorni == -1){
-                    let parola = 'giorno';
-                }else {
-                    let parola = 'giorni'
+            let data = new Date();
+    
+            const year = data.getFullYear();
+            const month = data.getMonth();
+            const day = data.getDate();
+    
+            let finalDate = new Date(year, month, day);
+    
+            const controlloNotifica = await prisma.notifiche.findFirst({
+                where: {
+                    id_utente: +req.body.id_utente,
+                    id_piantagione: +req.body.id_piantagione,
+                    data_invio: finalDate,
+                    tipo: 1,
                 }
-                const notifica = await prisma.notifiche.create({
-                    data: {
-                        id_utente: +req.body.id_utente,
-                        id_piantagione: +req.body.id_piantagione,
-                        testo: `Hai saltato l'annaffiatura' nella pinatagione: ${req.body.nome} da {inserire giorni} ${parola}`,
-                        nome_piantagione: req.body.nome,
-                    }
-                })
-
-                res.status(201);
-                res.json(notifica)
+            });
+    
+            if (!controlloNotifica) {
+                let notificaTesto = '';
+    
+                if (+req.body.giorni == 10) {
+                    notificaTesto = `Tra 10 giorni devi raccogliere: ${req.body.nome}, della raccolta nella piantagione: ${req.body.nome}`;
+                } else if (+req.body.giorni == 2) {
+                    notificaTesto = `Tra 2 giorni devi raccogliere: ${req.body.nome}, della raccolta nella piantagione: ${req.body.nome}`;
+                } else if (+req.body.giorni == 0) {
+                    notificaTesto = `E' ora della raccolta di ${req.body.nome}, nella piantagione: ${req.body.nome}`;
+                }
+    
+                if (notificaTesto) {
+                    const notifica = await prisma.notifiche.create({
+                        data: {
+                            id_utente: id_utente,
+                            id_piantagione: id_piantagione,
+                            nome_piantagione: nome_piantagione,
+                            testo: notificaTesto,
+                            data_invio: finalDate,
+                            tipo: 1,
+                        }
+                    });
+                    res.status(201).json(notifica);
+                } else {
+                    res.status(400).json({ error: "Invalid giorni value" });
+                }
+            } else {
+                console.log('notifica già inviata raccolta');
+                res.status(200).json({ message: 'Notifica già inviata per questa data' });
             }
-
         } catch (error) {
             console.log(error);
-            console.log('errore notifica acqua');
+            res.status(500).json({ error: 'Errore notifica raccolta' });
         }
-    }) 
+    });
+    
+
+    //notifiche acqua
+    app.post('/notificheAddWater', async (req, res) => {
+        try {
+            const id_utente = +req.body.id_utente;
+            const id_piantagione = +req.body.id_piantagione;
+            const nome_piantagione = req.body.nome;
+            const giorni = +req.body.giorni;
+    
+            let data = new Date();
+            const year = data.getFullYear();
+            const month = data.getMonth();
+            const day = data.getDate();
+            let finalDate = new Date(year, month, day);
+    
+            const controlloNotifica = await prisma.notifiche.findFirst({
+                where: {
+                    id_utente: id_utente,
+                    id_piantagione: id_piantagione,
+                    data_invio: finalDate,
+                    tipo: 0,
+                }
+            });
+    
+            if (!controlloNotifica) {
+                let testoNotifica = '';
+    
+                if (giorni == 2) {
+                    testoNotifica = `Ricordati di annaffiare la piantagione: ${nome_piantagione} tra ${giorni} giorni`;
+                } else if (giorni == 0) {
+                    testoNotifica = `E' il momento di annaffiare la piantagione: ${nome_piantagione}`;
+                } else if (giorni < 0) {
+                    const parola = (giorni == -1) ? 'giorno' : 'giorni';
+                    testoNotifica = `Hai saltato l'annaffiatura nella piantagione: ${nome_piantagione} da ${Math.abs(giorni)} ${parola}`;
+                }
+    
+                if (testoNotifica) {
+                    const notifica = await prisma.notifiche.create({
+                        data: {
+                            id_utente: id_utente,
+                            id_piantagione: id_piantagione,
+                            testo: testoNotifica,
+                            nome_piantagione: nome_piantagione,
+                            data_invio: finalDate,
+                            tipo: 0,
+                        }
+                    });
+    
+                    res.status(201).json(notifica);
+                } else {
+                    res.status(400).json({ error: "Invalid giorni value" });
+                }
+            } else {
+                console.log('Notifica già inviata acqua');
+                res.status(200).json({ message: 'Notifica già inviata per questa data' });
+            }
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Errore notifica acqua' });
+        }
+    });
+    
 
     app.put('/notificheSign', async (req, res) => {
         try {

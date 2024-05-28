@@ -56,7 +56,6 @@ piantagioneForm.addEventListener('submit', async (e) => {
     const nome = e.target.nome.value;
     const numeroPiante = e.target.numeroPiante.value;
     const pianta = e.target.pianta.value;
-    console.log(pianta);
     const validation = validate({
         nome,
         numeroPiante,
@@ -113,36 +112,59 @@ piantagioneForm.addEventListener('submit', async (e) => {
 function knowAcqua(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
 
+    
     const piantaCorrispondente = piante.find(pianta => pianta.id_pianta === id_pianta);
-
     if (piantaCorrispondente) {
         const t_acqua = piantaCorrispondente.t_acqua;
-        // console.log('Il valore di t_acqua per la pianta è:', t_acqua);
-        return t_acqua;
+        
+
+        let data_ultima_annaffiatura = moment(piantagioni.data_ultima_annaffiatura);
+        
+
+        let prossima_annaffiatura = moment(data_ultima_annaffiatura).add(t_acqua, 'days');
+        
+
+        function calcolaTempoRimanente() {
+            let giorno_corrente = moment();
+            
+
+            let tempo_rimanente = prossima_annaffiatura.diff(giorno_corrente, 'days');
+            
+
+            return tempo_rimanente;
+        }
+        
+        let tempo_finale = calcolaTempoRimanente();
+        
+        return tempo_finale;
     } else {
         console.log('Pianta non trovata');
         return 2;
     }
 }
 
+
 function knowRaccolta(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
 
-    // Trova la pianta corrispondente
     const piantaCorrispondente = piante.find(pianta => pianta.id_pianta === id_pianta);
     if (piantaCorrispondente) {
         let t_raccolta = piantaCorrispondente.t_raccolta;
-        let inizio_data = new Date();
-        let fine_data = new Date(inizio_data);
-        fine_data.setDate(inizio_data.getDate() + t_raccolta);
+        
+        let inizio_data = moment(piantagioni.data_inizio);
+        
+        let fine_data = moment(inizio_data).add(t_raccolta, 'days');
+        
 
         function calcolaTempoRimanente() {
-            let giorno_corrente = new Date();
-            let differenza_tempo = fine_data.getTime() - giorno_corrente.getTime(); 
-            tempo_rimanente = Math.ceil(differenza_tempo / (1000 * 3600 * 24));
-            return tempo_rimanente
+            let giorno_corrente = moment(); 
+        
+            let tempo_rimanente = fine_data.diff(giorno_corrente, 'days');
+        
+            return tempo_rimanente;
         }
-        let tempo_finale =calcolaTempoRimanente();
+        
+        let tempo_finale = calcolaTempoRimanente();
         
         return tempo_finale;
     } else {
@@ -229,21 +251,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     annaffiatoioImage.classList.add('h-12');
 
                     const annaffiatoioText = document.createElement('h1');
-                    const raccoltaAcqua = knowAcqua(piante, piantagione); // finireeeee
-                    annaffiatoioText.textContent = `tra ${raccoltaAcqua} giorni`;
+                    const tempoAcqua = knowAcqua(piante, piantagione);
+                    annaffiatoioText.textContent = `tra ${tempoAcqua} giorni`;
                     annaffiatoioText.classList.add('text-lg', 'font-bold');
 
                     //notifica annaffiare
-                    if (raccoltaAcqua <= 2){
+                    if (tempoAcqua <= 2){
                         notificaAcqua(id_utente);
                     }
                     async function notificaAcqua(id_utente){
                         try{
                             let id_piantagione = piantagione.id_piantagione;
-                            let nome = piantagione.nome_piantagione;
-                            let giorni = 1;
+                            let nome = piantagione.nome;
+                            let giorni = tempoAcqua;
                             const res = await fetch('http://localhost:8000/notificheAddWater', {
-                                method: 'PUT',
+                                method: 'POST',
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
@@ -256,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             })
 
                             if (res.status == 201) {
-                                //bdhasbhfa
+                                console.log('notifica acqua inviata');
                             }
                         } catch (error) {
                             console.log(error);
@@ -264,10 +286,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     }
 
-                    if (raccoltaAcqua < 2) {
+                    if (tempoAcqua < 2) {
                         annaffiatoioText.classList.add('text-orange-400');
                         annaffiatoioText.classList.remove('text-cyan-600');
-                    } else if (raccoltaAcqua >= 2) {
+                    } else if (tempoAcqua >= 2) {
                         annaffiatoioText.classList.add('text-cyan-600');
                         annaffiatoioText.classList.remove('text-orange-400');
                     }
@@ -281,22 +303,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                     raccoltaImage.classList.add('h-10');
 
                     const raccoltaText = document.createElement('h1');
-                    const giorniRimanenti = knowRaccolta(piante, piantagione); // finireeee
-                    raccoltaText.textContent = `tra ${giorniRimanenti} giorni`;
+                    const tempoRaccolta = knowRaccolta(piante, piantagione); 
+                    
+                    raccoltaText.textContent = `tra ${tempoRaccolta} giorni`;
                     raccoltaText.classList.add('text-lg', 'font-bold');
 
                     //notifica raccogliere
-                    if(giorniRimanenti <= 10){
+                    if(tempoRaccolta <= 10){
                         notificaRaccolta(id_utente);
                     }
                     async function notificaRaccolta(id_utente){
                         try{
                             
                             let id_piantagione = piantagione.id_piantagione;
-                            let nome = piantagione.nome_piantagione;
-                            let giorni = 1;
+                            let nome = piantagione.nome;
+                            console.log(nome);
+                            let giorni = tempoRaccolta;
                             const res = await fetch('http://localhost:8000/notificheAddRaccolta', {
-                                method: 'PUT',
+                                method: 'POST',
                                 headers: {
                                     "Content-Type": "application/json",
                                 },
@@ -309,7 +333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             })
 
                             if (res.status == 201) {
-                                //bdhasbhfa
+                                console.log('notifica inviata');
                             }
                         } catch (error) {
                             console.log(error);
@@ -317,15 +341,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                         }
                     }
 
-                    if (giorniRimanenti >= 5 && giorniRimanenti <= 14) {
+                    if (tempoRaccolta >= 5 && tempoRaccolta <= 14) {
                         raccoltaText.classList.add('text-orange-400');
                         raccoltaText.classList.remove('text-red-600');
                         raccoltaText.classList.remove('text-cyan-600');
-                    } else if (giorniRimanenti <= 4) {
+                    } else if (tempoRaccolta <= 4) {
                         raccoltaText.classList.add('text-red-600');
                         raccoltaText.classList.remove('text-orange-400');
                         raccoltaText.classList.remove('text-cyan-600');
-                    } else if (giorniRimanenti >= 15) {
+                    } else if (tempoRaccolta >= 15) {
                         raccoltaText.classList.add('text-cyan-600');
                         raccoltaText.classList.remove('text-red-600');
                         raccoltaText.classList.remove('text-orange-400');

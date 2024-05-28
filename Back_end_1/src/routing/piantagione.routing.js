@@ -47,9 +47,14 @@ export default function pianteRouting(app){
 
     app.delete('/piantagione', async (req, res) => {
         try {
+            const deleteNotifiche = await prisma.notifiche.deleteMany({
+                where: {
+                    id_piantagione: +req.body.id_piantagione
+                }
+            })
             const deletePiantagione = await prisma.piantagione.delete({
                 where: {
-                    id_piantagione: req.body.id_piantagione
+                    id_piantagione: +req.body.id_piantagione
                 }
             })
 
