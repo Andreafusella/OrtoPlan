@@ -14,6 +14,7 @@ model Utente {
   credenziali  Credenziali?
   piantagioni  Piantagione[]
   notifiche    Notifiche[]
+  annaffiature Annaffiature[]
 }
 
 model Credenziali {
@@ -33,6 +34,7 @@ model Piantagione {
   utente           Utente        @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
   pianta           Pianta        @relation(fields: [id_pianta], references: [id_pianta], onDelete: Cascade, onUpdate: Cascade)
   notifiche        Notifiche[]   @relation
+  annaffiature     Annaffiature[]   
 }
 
 model Pianta {
@@ -47,11 +49,25 @@ model Notifiche {
   id_notifica      Int           @id @default(autoincrement())
   testo            String
   aperta           Boolean       @default(false)
-  utente           Utente        @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
   id_utente        Int
-  piantagione      Piantagione   @relation(fields: [id_piantagione], references: [id_piantagione], onDelete: Cascade, onUpdate: Cascade)
   id_piantagione   Int
   nome_piantagione String
   data_invio       DateTime
   tipo             Int
+  utente           Utente        @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+  piantagione      Piantagione   @relation(fields: [id_piantagione], references: [id_piantagione], onDelete: Cascade, onUpdate: Cascade)
 }
+
+model Annaffiature {
+  id_annaffiatura  Int        @id @default(autoincrement())
+  id_utente        Int
+  id_piantagione   Int
+  giorni_rimanenti Int
+  data_save        DateTime
+
+  utente           Utente     @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+  piantagione      Piantagione @relation(fields: [id_piantagione], references: [id_piantagione], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([id_utente, id_piantagione, data_save])
+}
+

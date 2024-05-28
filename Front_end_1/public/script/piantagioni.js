@@ -82,7 +82,6 @@ piantagioneForm.addEventListener('submit', async (e) => {
 
     const utente = JSON.parse(localStorage.getItem('utente'));
     const id_utente = utente.utente.id_utente;
-    console.log(id_utente);
     const res = await fetch('http://localhost:8000/addPiantagione', {
         method: 'POST',
         headers: {
@@ -109,43 +108,63 @@ piantagioneForm.addEventListener('submit', async (e) => {
 });
 
 
-function knowAcqua(piante, piantagioni) {
+async function knowAcqua(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
+    const utente = JSON.parse(localStorage.getItem('utente'));
+    const id_utente = utente.utente.id_utente;
 
-    
     const piantaCorrispondente = piante.find(pianta => pianta.id_pianta === id_pianta);
+    
     if (piantaCorrispondente) {
         const t_acqua = piantaCorrispondente.t_acqua;
+
+        const prossima_annaffiatura = moment(piantagioni.data_inizio).add(t_acqua, 'days');
+        const giorno_corrente = moment();
+
+        const tempo_rimanente = prossima_annaffiatura.diff(giorno_corrente, 'days');
         
 
-        let data_ultima_annaffiatura = moment(piantagioni.data_ultima_annaffiatura);
-        
+        try {
+            const res = await fetch('http://localhost:8000/saveDataAcqua', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_utente: id_utente,
+                    id_piantagione: piantagioni.id_piantagione,
+                    t_acqua: tempo_rimanente,
+                    data_save: new Date().toISOString(),
+                }),
+            });
 
-        let prossima_annaffiatura = moment(data_ultima_annaffiatura).add(t_acqua, 'days');
-        
+            const data = await res.json();
 
-        function calcolaTempoRimanente() {
-            let giorno_corrente = moment();
-            
-
-            let tempo_rimanente = prossima_annaffiatura.diff(giorno_corrente, 'days');
-            
-
-            return tempo_rimanente;
+            if (res.status == 201) {
+                console.log('Dati salvati correttamente');
+                const tempo_rimanente_db = data.giorni_rimanenti;
+                return tempo_rimanente_db;
+            } else {
+                console.log('Errore salvataggi dati');
+            }
+        } catch (error) {
+            console.log(error);
+            console.log('errore Savedata acqua');
         }
+
         
-        let tempo_finale = calcolaTempoRimanente();
-        
-        return tempo_finale;
     } else {
         console.log('Pianta non trovata');
-        return 2;
+        return null;
     }
 }
 
 
+
 function knowRaccolta(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
+    const utente = JSON.parse(localStorage.getItem('utente'));
+    const id_utente = utente.utente.id_utente;
 
     const piantaCorrispondente = piante.find(pianta => pianta.id_pianta === id_pianta);
     if (piantaCorrispondente) {
@@ -161,10 +180,12 @@ function knowRaccolta(piante, piantagioni) {
         
             let tempo_rimanente = fine_data.diff(giorno_corrente, 'days');
         
-            return tempo_rimanente;
+            return tempo_rimanente
+            
         }
         
         let tempo_finale = calcolaTempoRimanente();
+        console.log(tempo_finale);
         
         return tempo_finale;
     } else {
@@ -172,35 +193,6 @@ function knowRaccolta(piante, piantagioni) {
         return null;
     }
 }
-
-
-
-
-async function AllPlants() {
-    const res = await fetch('http://localhost:8000/piantagioni', {
-        method: 'GET',
-    });
-
-    if (res.ok) {
-        const data = await res.json();
-        console.log(data);
-
-        const inputPianta = document.getElementById('inputPianta');
-        inputPianta.innerHTML = '';
-
-        data.forEach((pianta) => {
-            const option = document.createElement('option');
-            option.value = pianta.nome;
-            option.textContent = pianta.nome;
-            inputPianta.appendChild(option);
-        });
-    } else {
-        console.log('Errore nella richiesta:', res.status);
-    }
-}
-
-
-
 
 document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('piantagioni-container');
@@ -221,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 const piantagioniUtente = piantagioni.filter(piantagione => piantagione.id_utente === id_utente);
 
-                piantagioniUtente.forEach((piantagione, index) => {
+                piantagioniUtente.forEach(async(piantagione, index) => {
                     const piantagioneDiv = document.createElement('div');
                     piantagioneDiv.classList.add('bg-gray-300', 'p-4', 'rounded-2xl', 'flex', 'flex-col', 'justify-center', 'items-center', 'shadow-2xl');
 
@@ -251,7 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     annaffiatoioImage.classList.add('h-12');
 
                     const annaffiatoioText = document.createElement('h1');
-                    const tempoAcqua = knowAcqua(piante, piantagione);
+                    const tempoAcqua = await knowAcqua(piante, piantagione);
                     annaffiatoioText.textContent = `tra ${tempoAcqua} giorni`;
                     annaffiatoioText.classList.add('text-lg', 'font-bold');
 
@@ -303,7 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     raccoltaImage.classList.add('h-10');
 
                     const raccoltaText = document.createElement('h1');
-                    const tempoRaccolta = knowRaccolta(piante, piantagione); 
+                    const tempoRaccolta = await knowRaccolta(piante, piantagione); 
                     
                     raccoltaText.textContent = `tra ${tempoRaccolta} giorni`;
                     raccoltaText.classList.add('text-lg', 'font-bold');
@@ -395,7 +387,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 
+async function AllPlants() {
+    const res = await fetch('http://localhost:8000/piantagioni', {
+        method: 'GET',
+    });
 
+    if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+
+        const inputPianta = document.getElementById('inputPianta');
+        inputPianta.innerHTML = '';
+
+        data.forEach((pianta) => {
+            const option = document.createElement('option');
+            option.value = pianta.nome;
+            option.textContent = pianta.nome;
+            inputPianta.appendChild(option);
+        });
+    } else {
+        console.log('Errore nella richiesta:', res.status);
+    }
+}
 
 function checkValidation(validation) {
     Object.keys(validation).forEach((key) => {

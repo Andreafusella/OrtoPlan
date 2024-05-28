@@ -33,7 +33,6 @@ async function confermaEliminazione(){
             window.location.href = '/piantagione';
         }
 
-
     } else {
 
     }
@@ -85,6 +84,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+async function annaffia(){
+    let textDAnnaffia = `Annaffiare la piantagione: ${nome}?`;
+    let confirmAnnaffia = confirm(textDAnnaffia)
+
+    const date = new Date();
+
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+
+    let date_save = new Date(year, month, day);
+
+    if (confirmAnnaffia) {
+        try {
+            const res = await fetch('http://localhost:8000/getTimePianta',{
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_pianta
+                }), 
+            });
+            const data = await res.json();
+            const t_acqua = data.t_acqua;
+
+            const res2 = await fetch('http://localhost:8000/annaffiare',{
+                //FARE QUESTO
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_piantagione,
+                    date_save,
+                    t_acqua,
+                    id_utente,
+
+                }),
+            });
+            const data2 = await res2.json();
+
+        } catch(error) {
+            console.log(error);
+            console.log('errore annaffiare la piantagione');
+        }
+    }
+}
 
 function selectImage(arr_img, id_pianta){
     return arr_img[id_pianta - 1];

@@ -7,6 +7,9 @@ export default function notificheRouting(app){
             const notifiche = await prisma.notifiche.findMany({
                 where: {
                     id_utente: req.body.id_utente,
+                },
+                orderBy: {
+                    id_notifica: 'desc'
                 }
             });
 
