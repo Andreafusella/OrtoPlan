@@ -112,52 +112,32 @@ async function knowAcqua(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
     const utente = JSON.parse(localStorage.getItem('utente'));
     const id_utente = utente.utente.id_utente;
-
+    const id_piantagione = piantagioni.id_piantagione;
     const piantaCorrispondente = piante.find(pianta => pianta.id_pianta === id_pianta);
     
     if (piantaCorrispondente) {
         const t_acqua = piantaCorrispondente.t_acqua;
-
-        const prossima_annaffiatura = moment(piantagioni.data_inizio).add(t_acqua, 'days');
         const giorno_corrente = moment();
+        const inizio_data = moment(piantagioni.data_inizio);
 
-        const tempo_rimanente = prossima_annaffiatura.diff(giorno_corrente, 'days');
+        // Calcola quanti giorni sono passati dalla data di inizio
+        const giorni_passati = giorno_corrente.diff(inizio_data, 'days');
+        console.log(`Giorni passati: ${giorni_passati}`);
+
+        // Calcola il tempo rimanente per il ciclo corrente
+        let tempo_rimanente = t_acqua - (giorni_passati % t_acqua);
         
-
-        try {
-            const res = await fetch('http://localhost:8000/saveDataAcqua', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    id_utente: id_utente,
-                    id_piantagione: piantagioni.id_piantagione,
-                    t_acqua: tempo_rimanente,
-                    data_save: new Date().toISOString(),
-                }),
-            });
-
-            const data = await res.json();
-
-            if (res.status == 201) {
-                console.log('Dati salvati correttamente');
-                const tempo_rimanente_db = data.giorni_rimanenti;
-                return tempo_rimanente_db;
-            } else {
-                console.log('Errore salvataggi dati');
-            }
-        } catch (error) {
-            console.log(error);
-            console.log('errore Savedata acqua');
+        if (tempo_rimanente === -1) {
+            tempo_rimanente = t_acqua - 1;
         }
-
-        
+        console.log(`Tempo rimanente: ${tempo_rimanente} giorni`);        
+        return tempo_rimanente -1;
     } else {
         console.log('Pianta non trovata');
         return null;
     }
 }
+
 
 
 
