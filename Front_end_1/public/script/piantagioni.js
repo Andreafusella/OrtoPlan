@@ -43,6 +43,7 @@ function openModalPiantagione() {
     }
 }
 
+//nuova piantagione
 piantagioneForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -56,6 +57,8 @@ piantagioneForm.addEventListener('submit', async (e) => {
     const nome = e.target.nome.value;
     const numeroPiante = e.target.numeroPiante.value;
     const pianta = e.target.pianta.value;
+    const citta = e.target.citta.value;
+
     const validation = validate({
         nome,
         numeroPiante,
@@ -94,6 +97,7 @@ piantagioneForm.addEventListener('submit', async (e) => {
             pianta,
             date: finalDate.toISOString(),
             id_utente,
+            citta,
         })
 
     });
@@ -107,7 +111,7 @@ piantagioneForm.addEventListener('submit', async (e) => {
     }
 });
 
-
+//scadenze acqua
 async function knowAcqua(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
     const utente = JSON.parse(localStorage.getItem('utente'));
@@ -120,11 +124,9 @@ async function knowAcqua(piante, piantagioni) {
         const giorno_corrente = moment();
         const inizio_data = moment(piantagioni.data_inizio);
 
-        // Calcola quanti giorni sono passati dalla data di inizio
         const giorni_passati = giorno_corrente.diff(inizio_data, 'days');
         console.log(`Giorni passati: ${giorni_passati}`);
 
-        // Calcola il tempo rimanente per il ciclo corrente
         let tempo_rimanente = t_acqua - (giorni_passati % t_acqua);
         
         if (tempo_rimanente === -1) {
@@ -138,9 +140,7 @@ async function knowAcqua(piante, piantagioni) {
     }
 }
 
-
-
-
+//scadenze raccolta
 function knowRaccolta(piante, piantagioni) {
     const id_pianta = piantagioni.id_pianta;
     const utente = JSON.parse(localStorage.getItem('utente'));
@@ -175,8 +175,21 @@ function knowRaccolta(piante, piantagioni) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const container = document.getElementById('piantagioni-container');
 
+
+    const utente = localStorage.getItem('utente');
+
+    if (!utente) {
+        window.location.href = '/';
+    }
+    const isPageRefreshed = localStorage.getItem('pageRefreshed');
+
+    if (!isPageRefreshed) {
+        localStorage.setItem('pageRefreshed', 'true');
+        location.reload();
+    }
+
+    const container = document.getElementById('piantagioni-container');
     async function fetchPiantagioni() {
         try {
             const res = await fetch('http://localhost:8000/piantagione', {
@@ -224,7 +237,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const annaffiatoioText = document.createElement('h1');
                     const tempoAcqua = await knowAcqua(piante, piantagione);
-                    annaffiatoioText.textContent = `tra ${tempoAcqua} giorni`;
+
+                    if (tempoAcqua == 0) {
+                        annaffiatoioText.textContent = 'Oggi';
+                    } else {
+                        annaffiatoioText.textContent = `tra ${tempoAcqua} giorni`;
+                    }
                     annaffiatoioText.classList.add('text-lg', 'font-bold');
 
                     //notifica annaffiare
@@ -275,9 +293,39 @@ document.addEventListener('DOMContentLoaded', async () => {
                     raccoltaImage.classList.add('h-10');
 
                     const raccoltaText = document.createElement('h1');
-                    const tempoRaccolta = await knowRaccolta(piante, piantagione); 
+                    const tempoRaccolta = await knowRaccolta(piante, piantagione);
                     
-                    raccoltaText.textContent = `tra ${tempoRaccolta} giorni`;
+                    if (tempoRaccolta < 0) {
+                        try {
+
+                            let id_piantagione = piantagione.id_piantagione;
+
+                            const res = await fetch('http://localhost:8000/piantagione', {
+                                method: 'DELETE',
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    id_piantagione
+                                }),
+
+                            })
+                                
+                            if (res.status == 201) {
+                                console.log('piantagione eliminata correttamente negativo');
+                            }
+
+                        } catch (error) {
+                            console.log(error);
+                            console.log('errore eliminazione pinatagione negativo');
+                        }
+                    }
+                    
+                    if (tempoRaccolta == 0) {
+                        raccoltaText.textContent = 'Oggi';
+                    } else {
+                        raccoltaText.textContent = `tra ${tempoRaccolta} giorni`;
+                    }
                     raccoltaText.classList.add('text-lg', 'font-bold');
 
                     //notifica raccogliere
@@ -289,7 +337,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                             
                             let id_piantagione = piantagione.id_piantagione;
                             let nome = piantagione.nome;
-                            console.log(nome);
                             let giorni = tempoRaccolta;
                             const res = await fetch('http://localhost:8000/notificheAddRaccolta', {
                                 method: 'POST',
@@ -327,10 +374,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                         raccoltaText.classList.remove('text-orange-400');
                     }
 
+                    const posizioneContainer = document.createElement('div');
+                    posizioneContainer.classList.add('flex', 'items-center', 'gap-3', 'mt-2');
+                    const p = document.createElement('h1')
+                    p.textContent = '📍';
+                    p.classList.add('text-3xl', 'h-[40px]', 'w-[40px]','text-center');
+                    const h1 = document.createElement('h1');
+                    h1.textContent = piantagione.citta;
+                    h1.classList.add('text-lg', 'font-bold', 'text-black');
+                    posizioneContainer.appendChild(p);
+                    posizioneContainer.appendChild(h1);
+
                     raccoltaContainer.appendChild(raccoltaImage);
                     raccoltaContainer.appendChild(raccoltaText);
                     infoContainer.appendChild(annaffiatoioContainer);
                     infoContainer.appendChild(raccoltaContainer);
+                    infoContainer.appendChild(posizioneContainer);
                     piantagioneDiv.appendChild(infoContainer);
 
                     const button = document.createElement('button');
@@ -409,6 +468,18 @@ function setErr(e, messages) {
         e.parentNode.insertBefore(p, e.nextSibling);
     });
 }
+
+// function initAutocomplete() {
+//     const input = document.getElementById('inputcitta');
+//     const options = {
+//         types: ['(cities)'],
+//         componentRestrictions: { country: 'it' }
+//     };
+
+//     const autocomplete = new google.maps.places.Autocomplete(input, options);
+// }
+
+// google.maps.event.addDomListener(window, 'load', initAutocomplete);
 
 
 

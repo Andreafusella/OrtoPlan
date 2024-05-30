@@ -56,7 +56,7 @@ export default function notificheRouting(app){
             });
     
             if (!controlloNotifica) {
-                let notificaTesto = '';
+                let notificaTesto = ''; 
     
                 if (+req.body.giorni == 10) {
                     notificaTesto = `Tra 10 giorni devi raccogliere: ${req.body.nome}, della raccolta nella piantagione: ${req.body.nome}`;
@@ -118,13 +118,10 @@ export default function notificheRouting(app){
             if (!controlloNotifica) {
                 let testoNotifica = '';
     
-                if (giorni == 2) {
-                    testoNotifica = `Ricordati di annaffiare la piantagione: ${nome_piantagione} tra ${giorni} giorni`;
+                if (giorni == 1) {
+                    testoNotifica = `Ricordati di annaffiare la piantagione: ${nome_piantagione} tra ${giorni} giorno`;
                 } else if (giorni == 0) {
                     testoNotifica = `E' il momento di annaffiare la piantagione: ${nome_piantagione}`;
-                } else if (giorni < 0) {
-                    const parola = (giorni == -1) ? 'giorno' : 'giorni';
-                    testoNotifica = `Hai saltato l'annaffiatura nella piantagione: ${nome_piantagione} da ${Math.abs(giorni)} ${parola}`;
                 }
     
                 if (testoNotifica) {

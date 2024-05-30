@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piantagioni</title>
     <link rel="stylesheet" href="/style/output.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBCWK3F4ktETa3C-IEJdQmRKFvsVKYac0&libraries=places"></script>
 </head>
 <body class="bg-white min-h-screen">
     <%- include ('components/navbar_home') %>
@@ -15,9 +16,10 @@
             <button class="btn btn-primary text-white font-bold" onclick="openModalPiantagione()">Nuova Piantagione</button>
         </div>
         <div id="piantagioni-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mt-5">
-            
         </div>
-        
+        <div>
+
+        </div>
     </div>
 
     <dialog id="piantagione" class="modal">
@@ -30,6 +32,13 @@
                 <input id="inputNumeroPiante" placeholder="Scegli un numero" type="number" name="numeroPiante" class="input input-bordered w-full bg-white" min="1" max="25">
                 <h1 class="text-black">Pianta</h1>
                 <select id="inputPianta" placeholder="Scegli una pianta" name="pianta" class="input input-bordered w-full bg-white">
+                </select>
+                <h1 class="text-black">Città</h1>
+                <select id="inputcitta" placeholder="Città" type="text" name="citta" class="input input-bordered w-full bg-white">
+                    <option value="Pescara">Pescara</option>
+                    <option value="Milano">Milano</option>
+                    <option value="Napoli">Napoli</option>
+                    <option value="Roma">Roma</option>
                 </select>
                 <div class="modal-action">
                     <button type="button" class="btn text-white" onclick="piantagione.close()">

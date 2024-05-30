@@ -1,3 +1,4 @@
+import { json } from "express";
 import prisma from "../../db/prisma.js";
 import { addPiantagioneValidation } from '../validation/piantagione.validations.js'
 export default function pianteRouting(app){
@@ -9,7 +10,6 @@ export default function pianteRouting(app){
                 },
             });
     
-            console.log(req.body.date);
             const newPiantagione = await prisma.piantagione.create({
                 data: {
                     nome: req.body.nome,
@@ -17,6 +17,7 @@ export default function pianteRouting(app){
                     data_inizio: req.body.date,
                     id_pianta: +pianta.id_pianta,
                     id_utente: +req.body.id_utente,
+                    citta: req.body.citta,
                 }
             });
     
@@ -63,6 +64,30 @@ export default function pianteRouting(app){
             
         } catch(error) {
             console.log(error);
+        }
+    })
+
+    app.put('/getCittaPiantagione', async (req, res) => {
+        try {
+            const id_piantagione = +req.body.id_piantagione;
+            const piantagione = await prisma.piantagione.findFirst({
+                where: {
+                    id_piantagione: id_piantagione
+                }
+            });
+
+            if (piantagione) {
+                console.log('successo find piantagione citta');
+                res.status(201);
+                res.json(piantagione);
+            } else {
+                console.log('errore find piantagione citta');
+                res.status(404);
+            }
+
+        } catch (error) {
+            console.log(error);
+            console.log('errore ricerca citta piantagioen');
         }
     })
 }

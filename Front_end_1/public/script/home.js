@@ -38,6 +38,8 @@ function openModalLogin(){
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
+
+
   const email = e.target.children[1].value;
   const password = e.target.children[3].value;
 
@@ -154,6 +156,12 @@ RegisterForm.addEventListener('submit', async (e) => {
 function setErrLogin(){
   const inputEmail = document.querySelector('#inputEmailLogin');
   const inputPassword = document.querySelector('#inputPasswordLogin');
+
+  const p1 = document.querySelector('#errorLoginP')
+  if (p1) {
+    p1.remove();
+  }
+
   const p = document.createElement("p");
   p.setAttribute("id", "errorLoginP");
   p.textContent = 'Credenziali non valide';
