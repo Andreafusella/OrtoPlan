@@ -129,26 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('modal').classList.add('hidden');
                 });
 
-                document.getElementById('deleteSelected').addEventListener('click', async () => {
-                    const selectedCheckboxes = document.querySelectorAll('.checkbox:checked');
-                    for (const checkbox of selectedCheckboxes) {
-                        const row = checkbox.closest('tr');
-                        const notificaId = row.querySelector('td:first-child').textContent;
-                        try {
-                            const res = await fetch(`http://localhost:8000/notifiche/${notificaId}`, {
-                                method: 'DELETE',
-                            });
-                            if (res.ok) {
-                                row.remove();
-                            } else {
-                                console.error('Errore nella cancellazione della notifica');
-                            }
-                        } catch (error) {
-                            console.error('Errore nella cancellazione della notifica', error);
-                        }
-                    }
-                });
-
             } else if (res.status == 404) {
                 const tabella = document.getElementById('tabella');
                 tabella.classList.add('hidden');
@@ -163,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const body = document.getElementById('textNotNotification');
                 const h1 = document.createElement('h1');
                 h1.textContent = 'Nessuna Notifica';
-                h1.classList.add('text-black', 'text-3xl', 'font-bold');
+                h1.classList.add('text-black', 'text-3xl', 'font-bold', 'mb-10');
 
                 body.appendChild(h1);
             }
@@ -173,8 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-
 function closeModal() {
     const modal = document.getElementById('modal');
     const backdrop = document.getElementById('modal-backdrop');
@@ -183,3 +161,45 @@ function closeModal() {
     location.reload();
 }
 
+async function deleteNotifiche(){
+    try {
+
+        const res = await fetch('http://localhost:8000/deleteNotifiche',{
+            method: 'DELETE',
+        });
+
+        if (res.status == 201) {
+            console.log('notifiche eliminate correttamente');
+
+            const countNotifiche = await res.json();
+
+            const h1 = document.createElement('h1');
+            if(countNotifiche.count == 1){
+                h1.textContent = `E' stata eliminata 1 notifica`
+            } else {
+                h1.textContent = `Sono state elimiante ${countNotifiche.count} notifiche`
+            }
+            const tabella = document.getElementById('tabella');
+            tabella.classList.add('hidden');
+            const divEmpty = document.getElementById('divEmpty');
+
+            const textNotNotification = document.createElement('div');
+            textNotNotification.id = 'textNotNotification';
+            textNotNotification.classList.add('flex', 'justify-center', 'items-center', 'm-10');
+            divEmpty.appendChild(textNotNotification);
+
+            const body = document.getElementById('textNotNotification');
+            h1.classList.add('text-black', 'text-3xl', 'font-bold', 'mb-10');
+
+            body.appendChild(h1);
+
+
+        } else {
+            console.log('errore delte notifiche');
+        }
+
+    } catch(error) {
+        console.log(error);
+        console.log('errore cancellazione notifiche');
+    }
+}

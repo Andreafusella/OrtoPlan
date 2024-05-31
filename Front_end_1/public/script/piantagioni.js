@@ -469,17 +469,6 @@ function setErr(e, messages) {
     });
 }
 
-// function initAutocomplete() {
-//     const input = document.getElementById('inputcitta');
-//     const options = {
-//         types: ['(cities)'],
-//         componentRestrictions: { country: 'it' }
-//     };
-
-//     const autocomplete = new google.maps.places.Autocomplete(input, options);
-// }
-
-// google.maps.event.addDomListener(window, 'load', initAutocomplete);
 
 
 

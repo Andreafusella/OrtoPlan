@@ -192,4 +192,26 @@ export default function notificheRouting(app){
             console.log('errore ricerca immagine');
         }
     })
+
+    app.delete('/deleteNotifiche', async (req, res) => {
+        try {
+            
+
+            const notifiche = await prisma.notifiche.deleteMany()
+
+            if(notifiche){
+                console.log('elimiante con successo');
+                res.status(201);
+                res.json(notifiche);
+            } else {
+                console.log('non sono state trovate notifiche');
+                res.status(404);
+                res.json();
+            }
+        } catch(error) {
+            console.log(error);
+            res.status(500);
+            res.json();
+        }
+    })
 }
