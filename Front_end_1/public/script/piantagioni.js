@@ -1,4 +1,6 @@
 
+const utente = JSON.parse(localStorage.getItem('utente'));
+const id_utente = utente.utente.id_utente;
 
 const piantagioneModal = document.getElementById('piantagione');
 const piantagioneForm = document.getElementById('piantagioneForm');
@@ -58,6 +60,17 @@ piantagioneForm.addEventListener('submit', async (e) => {
     const numeroPiante = e.target.numeroPiante.value;
     const pianta = e.target.pianta.value;
     const citta = e.target.citta.value;
+
+    // const apiKey = "30b35159cd1dfce6826a18b5fbbfacfc";
+    // const urlcitta = `http://api.openweathermap.org/data/2.5/weather?q=${citta}&appid=${apiKey}&units=metric`;
+
+    // try {
+    //     const responseOggi = await Promise.all(fetch(urlcitta));
+
+    //     if (!responseOggi.ok) {
+    //         throw new Error('Città non trovata');
+    //     }
+    // }
 
     const validation = validate({
         nome,
@@ -166,7 +179,6 @@ function knowRaccolta(piante, piantagioni) {
         
         let tempo_finale = calcolaTempoRimanente();
         console.log(tempo_finale);
-        
         return tempo_finale;
     } else {
         console.log('Pianta non trovata');
@@ -174,9 +186,30 @@ function knowRaccolta(piante, piantagioni) {
     }
 }
 
+//mostra messaggio 'al momento non hai piantagioni'
+message_nopiantagioni()
+async function message_nopiantagioni(){
+    const messaggio = document.getElementById('messageNoPiantagione');
+    try {
+        const res = await fetch(`http://localhost:8000/num_piantagioni?id_utente=${id_utente}`, {
+            method: 'GET',
+        });
+
+        if (res.status == 201){
+            const data = await res.json();
+            if (data == 0) {
+                messaggio.textContent = 'Non è presente alcuna piantagione';
+                
+            } else {
+                messaggio.classList.add('Hidden');
+            }
+        }
+    } catch(error) {
+        console.log(error);
+        console.log('errore ricerca num piantagioni');
+    }
+}
 document.addEventListener('DOMContentLoaded', async () => {
-
-
     const utente = localStorage.getItem('utente');
 
     if (!utente) {
@@ -295,6 +328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const raccoltaText = document.createElement('h1');
                     const tempoRaccolta = await knowRaccolta(piante, piantagione);
                     
+                    //elimina la piantagione a -1 di raccolta
                     if (tempoRaccolta < 0) {
                         try {
 
@@ -402,7 +436,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             id_utente: piantagione.id_utente,
                             id_pianta: piantagione.id_pianta,
                             data_inizio: piantagione.data_inizio,
-                            nome: piantagione.nome
+                            nome: piantagione.nome,
+                            t_acqua: tempoAcqua,
+                            t_raccolta: tempoRaccolta,
                         }));
 
                         let storedpiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
@@ -413,6 +449,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     piantagioneDiv.appendChild(button);
 
                     container.appendChild(piantagioneDiv);
+
+                    notificheMeteo(piantagione);
                 });
             } else {
                 console.error('Errore durante il recupero delle piantagioni:', res.status);
@@ -467,6 +505,67 @@ function setErr(e, messages) {
         p.id = 'errorMessage';
         e.parentNode.insertBefore(p, e.nextSibling);
     });
+}
+
+//ricerca meteo e invia notifiche
+async function notificheMeteo(piantagione){
+    const utente = JSON.parse(localStorage.getItem('utente'));
+
+    const id_utente = utente.utente.id_utente;
+    const nome_piantagione = piantagione.nome;
+    const citta = piantagione.citta;
+    const id_piantagione = piantagione.id_piantagione;
+    const apiKey = "30b35159cd1dfce6826a18b5fbbfacfc";
+    const urlForecast = `http://api.openweathermap.org/data/2.5/forecast?q=${citta}&appid=${apiKey}&units=metric`;
+    
+    try {
+        const [responseForecast] = await Promise.all([fetch(urlForecast)]);
+
+        if (!responseForecast.ok) {
+            throw new Error('Previsioni non disponibili');
+        }
+
+        const dataForecast = await responseForecast.json();
+
+        const forecast = dataForecast.list;
+        const now = new Date();
+        const tomorrow = new Date(now);
+
+        const domani = forecast.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
+
+        if (domani.weather[0].main == 'Rain'){
+            try {
+                const res = await fetch('http://localhost:8000/notificheMeteo',{
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        nome_piantagione,
+                        citta,
+                        id_utente,
+                        id_piantagione,
+
+                    }),
+                });
+
+                if (res.status == 201){
+                    console.log('notifica meteo inviata');
+                    return null
+                } else {
+                    console.log('erorre notifica meteo');
+                    return null
+                }
+            } catch(error) {
+                console.log(error);
+                console.log('errore invio notifica meteo');
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        console.log('erroe meteo');
+    }
 }
 
 

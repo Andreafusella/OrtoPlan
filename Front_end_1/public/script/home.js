@@ -116,6 +116,9 @@ RegisterForm.addEventListener('submit', async (e) => {
     },
     conferma_password: {
       equality: 'password',
+    },
+    email: {
+      presence: { allowEmpty: false },
     }
   });
 
@@ -139,7 +142,9 @@ RegisterForm.addEventListener('submit', async (e) => {
   });
 
   if(res.status !== 200) {
-    console.log('errore');
+    console.log('errore validation');
+    const errore = document.getElementById('error_message');
+    errore.classList.remove('hidden');
     return
   }
 
@@ -149,7 +154,7 @@ RegisterForm.addEventListener('submit', async (e) => {
   localStorage.setItem('utente', JSON.stringify(data.utente));
   localStorage.setItem('token', data.token);
 
-  window.location.href = '/home';
+  window.location.href = '/piantagione';
 
 })
 

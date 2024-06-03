@@ -89,5 +89,21 @@ export default function pianteRouting(app){
             console.log(error);
             console.log('errore ricerca citta piantagioen');
         }
+    });
+
+    app.get('/num_piantagioni', async (req, res) => {
+        try{
+            console.log(req);
+            const num_piantagioni = await prisma.piantagione.count({
+                where: {
+                    id_utente: +req.query.id_utente
+                }
+            });
+
+            res.status(201).json(num_piantagioni);
+        } catch(error) {
+            console.log(error);
+            console.log('errore ricerca num piantagioni');
+        }
     })
 }

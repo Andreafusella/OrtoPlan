@@ -47,6 +47,10 @@ app.get('/meteo', (req, res) => {
     res.render('pages/meteo');
 })
 
+app.get('/profilo', (req, res) => {
+    res.render('pages/profilo');
+})
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

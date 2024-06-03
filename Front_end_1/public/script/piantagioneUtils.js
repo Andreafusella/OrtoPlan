@@ -1,4 +1,5 @@
 const currentPiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
+
 console.log(currentPiantagione);
 
 const n_slot = +currentPiantagione.n_slot;
@@ -41,49 +42,42 @@ async function confermaEliminazione(){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('container');
-    const container2 = document.getElementById('container2');
     
-    const rows = Math.ceil(n_slot / 5);
+    const currentPiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
 
-    for (let i = 0; i < rows; i++) {
-        
-        const rowDiv = document.createElement('div');
-        rowDiv.classList.add('flex', 'gap-10', 'w-full', 'justify-center', 'items-center', 'mb-5');
+    const img_quantitaCell = document.getElementById('img_quantita');
+    const imgOrtaggio = document.createElement('img');
+    const quantita = document.createElement('h1');
+    const acquaCell = document.getElementById('annaffiatoio')
+    const raccoltaCell = document.getElementById('raccolta');
 
-        
-        const slotsInThisRow = Math.min(5, n_slot - i * 5);
-
-        
-        for (let j = 0; j < slotsInThisRow; j++) {
-            const slotDiv = document.createElement('div');
-            slotDiv.classList.add('bg-gray-300', 'p-6', 'rounded-2xl');
-
-            const image = document.createElement('img');
-            image.src = selectImage(arr_img, id_pianta); 
-            image.alt = '';
-            image.classList.add('h-20');
-
-            slotDiv.appendChild(image);
-            rowDiv.appendChild(slotDiv);
-        }
-
-        container.appendChild(rowDiv);
+    acquaCell.textContent = +currentPiantagione.t_acqua;
+    raccoltaCell.textContent = +currentPiantagione.t_raccolta;
+    if (+currentPiantagione.t_acqua >= 2 && +currentPiantagione.t_acqua < 5) {
+        acquaCell.classList.add('text-cyan-600');
+    }else if (+currentPiantagione.t_acqua < 2) {
+        acquaCell.classList.add('text-orange-400');
+    }
+    
+    if(+currentPiantagione.t_raccolta >= 5) {
+        raccoltaCell.classList.add('text-cyan-600');
+    } else if (+currentPiantagione.t_raccolta < 5) {
+        raccoltaCell.classList.add('text-orange-400');
     }
 
-    const imageHidden = document.createElement('img');
-    imageHidden.src = selectImage(arr_img, id_pianta);
-    imageHidden.classList.add('h-20');
 
-    const h1Hidden = document.createElement('h1');
-    h1Hidden.textContent = `x ${n_slot}`;
-    h1Hidden.classList.add('text-5xl', 'text-black', 'font-bold');
+    quantita.classList.add('text-black', 'font-bold', 'text-3xl');
+    imgOrtaggio.classList.add('h-24')
 
-    container2.appendChild(imageHidden);
-    container2.appendChild(h1Hidden);
+    imgOrtaggio.src = selectImage(arr_img, id_pianta);
+    quantita.textContent = `X ${n_slot}`;
+
+    img_quantitaCell.appendChild(imgOrtaggio);
+    img_quantitaCell.appendChild(quantita);
+
 
     //funzione per il meteo
-    meteo();
+    //meteo();
     async function meteo(){
         let citta = ''
         const res = await fetch('http://localhost:8000/getCittaPiantagione', {
@@ -128,23 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-
-function selectImage(arr_img, id_pianta){
-    return arr_img[id_pianta - 1];
-}
-
-const arr_img = [
-    '/plants/pomodoro.png',
-    '/plants/basilico.png',
-    '/plants/mais.png',
-    '/plants/lattuga.png',
-    '/plants/carota.png',
-    '/plants/melanzana.png',
-    '/plants/peperone.png',
-    '/plants/fagiolo.png',
-    '/plants/limone.png',
-    '/plants/arancia.png',
-];
 
 //set a displat le previsioni
 function displayWeather(oggi, dataForecast, citta) {
@@ -263,3 +240,20 @@ function displayWeather(oggi, dataForecast, citta) {
     textMeteo3.appendChild(temp3);
 
 }
+
+function selectImage(arr_img, id_pianta){
+    return arr_img[id_pianta - 1];
+}
+
+const arr_img = [
+    '/plants/pomodoro.png',
+    '/plants/basilico.png',
+    '/plants/mais.png',
+    '/plants/lattuga.png',
+    '/plants/carota.png',
+    '/plants/melanzana.png',
+    '/plants/peperone.png',
+    '/plants/fagiolo.png',
+    '/plants/limone.png',
+    '/plants/arancia.png',
+];

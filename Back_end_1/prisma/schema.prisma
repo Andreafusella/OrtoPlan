@@ -45,17 +45,27 @@ model Pianta {
 }
 
 model Notifiche {
-  id_notifica      Int             @id @default(autoincrement())
+  id_notifica      Int         @id @default(autoincrement())
   testo            String
-  aperta           Boolean         @default(false)
+  aperta           Boolean     @default(false)
   id_utente        Int
   id_piantagione   Int
   nome_piantagione String
   data_invio       DateTime
   tipo             Int
-  utente           Utente          @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
-  piantagione      Piantagione     @relation(fields: [id_piantagione], references: [id_piantagione], onDelete: Cascade, onUpdate: Cascade)
+  utente           Utente      @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+  piantagione      Piantagione @relation(fields: [id_piantagione], references: [id_piantagione], onDelete: Cascade, onUpdate: Cascade)
 }
+
+model NotificheEliminate {
+  id_notificaeliminata Int  @id @default(autoincrement())
+  id_utente            Int
+  id_piantagione       Int
+  tipo                 Int
+  data_invio           DateTime
+}
+
+
 
 
 

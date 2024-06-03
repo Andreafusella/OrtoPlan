@@ -1,17 +1,17 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     const apiKey = "30b35159cd1dfce6826a18b5fbbfacfc";
-    // const urlOggiMilano = `http://api.openweathermap.org/data/2.5/weather?q=Milano&appid=${apiKey}&units=metric`;
-    // const urlDomaniMilano = `http://api.openweathermap.org/data/2.5/forecast?q=Milano&appid=${apiKey}&units=metric`;
+    const urlOggiMilano = `http://api.openweathermap.org/data/2.5/weather?q=Milano&appid=${apiKey}&units=metric`;
+    const urlDomaniMilano = `http://api.openweathermap.org/data/2.5/forecast?q=Milano&appid=${apiKey}&units=metric`;
 
-    // const urlOggiRoma = `http://api.openweathermap.org/data/2.5/weather?q=Roma&appid=${apiKey}&units=metric`;
-    // const urlDomaniRoma = `http://api.openweathermap.org/data/2.5/forecast?q=Roma&appid=${apiKey}&units=metric`;
+    const urlOggiRoma = `http://api.openweathermap.org/data/2.5/weather?q=Roma&appid=${apiKey}&units=metric`;
+    const urlDomaniRoma = `http://api.openweathermap.org/data/2.5/forecast?q=Roma&appid=${apiKey}&units=metric`;
 
-    // const urlOggiPescara = `http://api.openweathermap.org/data/2.5/weather?q=Pescara&appid=${apiKey}&units=metric`;
-    // const urlDomaniPescara = `http://api.openweathermap.org/data/2.5/forecast?q=Pescara&appid=${apiKey}&units=metric`;
+    const urlOggiPescara = `http://api.openweathermap.org/data/2.5/weather?q=Pescara&appid=${apiKey}&units=metric`;
+    const urlDomaniPescara = `http://api.openweathermap.org/data/2.5/forecast?q=Pescara&appid=${apiKey}&units=metric`;
 
-    // const urlOggiNapoli = `http://api.openweathermap.org/data/2.5/weather?q=Napoli&appid=${apiKey}&units=metric`;
-    // const urlDomaniNapoli = `http://api.openweathermap.org/data/2.5/forecast?q=Napoli&appid=${apiKey}&units=metric`;
+    const urlOggiNapoli = `http://api.openweathermap.org/data/2.5/weather?q=Napoli&appid=${apiKey}&units=metric`;
+    const urlDomaniNapoli = `http://api.openweathermap.org/data/2.5/forecast?q=Napoli&appid=${apiKey}&units=metric`;
 
 
     try {

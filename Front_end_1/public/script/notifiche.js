@@ -31,7 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     const row = document.createElement('tr');
                     
                     const idCell = document.createElement('td');
-                    idCell.textContent = notifica.id_notifica;
+                    const imgCell = document.createElement('img');
+                    
+                    if (notifica.tipo == 0) {
+                        imgCell.src = '/assets/annaffiatoio.png';
+                        imgCell.classList.add('h-10');
+                    } else if (notifica.tipo == 1) {
+                        imgCell.src = '/assets/raccolta.png';
+                        imgCell.classList.add('h-10');
+                    } else if (notifica.tipo == 2) {
+                        imgCell.src = '/assets/pioggia.png';
+                        imgCell.classList.add('h-12')
+                    }
+
+                    idCell.appendChild(imgCell);
                     idCell.classList.add('px-4', 'py-2');
 
                     const piantagioneCell = document.createElement('td');
@@ -40,6 +53,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const testoCell = document.createElement('td');
                     testoCell.classList.add('px-4', 'py-2');
+
+                    const data_invioCell = document.createElement('td');
+                    const data_invio = notifica.data_invio;
+                    let data = new Date(data_invio);
+
+                    
+
+                    let anno = data.getFullYear();
+                    console.log(anno);
+                    let mese = ('0' + (data.getMonth() + 1)).slice(-2); 
+                    console.log(mese);
+                    let giorno = ('0' + data.getDate()).slice(-2);
+                    console.log(giorno);
+
+                    let data_formattata = `${giorno}/${mese}/${anno}`;
+
+                    data_invioCell.textContent = data_formattata;
+                    data_invioCell.classList.add('px-4', 'py-2', 'text-black')
 
                     const p = document.createElement('p');
                     const p2 = document.createElement('p');
@@ -75,15 +106,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                         
                         const titolo = document.createElement('h1');
-                        titolo.textContent = 'Annaffiare';
+
+                        if (notifica.tipo == 0) {
+                            titolo.textContent = 'Annaffiare';
+                        } else if (notifica.tipo == 1) {
+                            titolo.textContent = 'Raccolta';
+                        } else if (notifica.tipo == 2) {
+                            titolo.textContent = 'Pioggia';
+                        }
                         titolo.classList.add('text-3xl', 'text-black', 'font-bold', 'mb-3', 'text-center');
 
                         const testo = document.createElement('h1');
                         testo.classList.add('text-xl', 'text-black', 'font-bold', 'text-center');
-                        testo.textContent = notifica.testo;
+                        
+
+                        let testo_notifica = notifica.testo;
+                        testo_notifica = testo_notifica.replace(/piantagione:\s*\w+/, "piantagione:");
+                        testo.textContent = testo_notifica;
+
+                        const nomePiantagione = document.createElement('h1');
+                        nomePiantagione.textContent = notifica.nome_piantagione;
+                        nomePiantagione.classList.add('text-3xl', 'text-red-500', 'font-bold', 'text-center', 'mt-10');
+
 
                         modalText.appendChild(titolo);
                         modalText.appendChild(testo);
+                        modalText.appendChild(nomePiantagione);
                         
                         document.getElementById('modal').classList.remove('hidden');
 
@@ -119,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     row.appendChild(idCell);
                     row.appendChild(piantagioneCell);
+                    row.appendChild(data_invioCell);
                     row.appendChild(testoCell);
                     
 
@@ -172,6 +221,12 @@ async function deleteNotifiche(){
             console.log('notifiche eliminate correttamente');
 
             const countNotifiche = await res.json();
+
+            //elimina prima di ricrearla
+            const oldTextNotNotification = document.getElementById('textNotNotification');
+            if (oldTextNotNotification) {
+                oldTextNotNotification.remove();
+            }
 
             const h1 = document.createElement('h1');
             if(countNotifiche.count == 1){

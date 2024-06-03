@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Piantagioni</title>
     <link rel="stylesheet" href="/style/output.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBCWK3F4ktETa3C-IEJdQmRKFvsVKYac0&libraries=places"></script>
 </head>
 <body class="bg-white min-h-screen">
     <%- include ('components/navbar_home') %>
-    <div class="mx-10 my-10 flex flex-col">
+    <div class="m-10 flex flex-col">
         
         <div class="flex justify-between">
             <p></p>
             <button class="btn btn-primary text-white font-bold" onclick="openModalPiantagione()">Nuova Piantagione</button>
         </div>
+        <h1 id="messageNoPiantagione" class="flex justify-center items-center my-10 font-bold text-2xl text-black"></h1>
         <div id="piantagioni-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mt-5">
         </div>
         <div>
@@ -34,6 +34,7 @@
                 <select id="inputPianta" placeholder="Scegli una pianta" name="pianta" class="input input-bordered w-full bg-white">
                 </select>
                 <h1 class="text-black">Città</h1>
+                <!-- <input id="inputCitta" placeholder="Città" type="text" name="citta" class="input input-bordered w-full bg-white"> -->
                 <select id="inputcitta" placeholder="Città" type="text" name="citta" class="input input-bordered w-full bg-white">
                     <option value="Pescara">Pescara</option>
                     <option value="Milano">Milano</option>

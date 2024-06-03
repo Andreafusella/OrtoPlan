@@ -1,6 +1,7 @@
 import prisma from "../../db/prisma.js";
 
 export default function notificheRouting(app){
+    //tutte le notifiche
     app.post('/notifiche', async (req, res) => {
         try {
             
@@ -29,7 +30,6 @@ export default function notificheRouting(app){
         }
     })
 
-
     //notifiche raccolta
     app.post('/notificheAddRaccolta', async (req, res) => {
         try {
@@ -54,8 +54,16 @@ export default function notificheRouting(app){
                     tipo: 1,
                 }
             });
+            const controlloNotificaEliminata = await prisma.notificheEliminate.findFirst({
+                where: {
+                    id_utente: id_utente,
+                    id_piantagione: id_piantagione,
+                    tipo: 1,
+                    data_invio: finalDate,
+                }
+            })
     
-            if (!controlloNotifica) {
+            if (!controlloNotifica && !controlloNotificaEliminata) {
                 let notificaTesto = ''; 
     
                 if (+req.body.giorni == 10) {
@@ -77,6 +85,14 @@ export default function notificheRouting(app){
                             tipo: 1,
                         }
                     });
+                    const notificaEliminata = await prisma.NotificheEliminate.create({
+                        data: {
+                            id_utente: id_utente,
+                            id_piantagione: id_piantagione,
+                            tipo: 1,
+                            data_invio: finalDate,
+                        }
+                    })
                     res.status(201).json(notifica);
                 } else {
                     res.status(400).json({ error: "Invalid giorni value" });
@@ -90,8 +106,73 @@ export default function notificheRouting(app){
             res.status(500).json({ error: 'Errore notifica raccolta' });
         }
     });
-    
 
+    //notifiche meteo
+    app.post('/notificheMeteo', async (req, res) => {
+
+        const nome_piantagione = req.body.nome_piantagione;
+        const citta = req.body.citta;
+        const id_utente = +req.body.id_utente;
+        const id_piantagione = +req.body.id_piantagione;
+
+        let data = new Date();
+        const year = data.getFullYear();
+        const month = data.getMonth();
+        const day = data.getDate();
+        let finalDate = new Date(year, month, day);
+
+        try {
+            const controlloNotifica = await prisma.notifiche.findFirst({
+                where: {
+                    id_utente: +req.body.id_utente,
+                    id_piantagione: +req.body.id_piantagione,
+                    data_invio: finalDate,
+                    tipo: 2,
+                }
+            });
+            const controlloNotificaEliminata = await prisma.notificheEliminate.findFirst({
+                where: {
+                    id_utente: id_utente,
+                    id_piantagione: id_piantagione,
+                    tipo: 2,
+                    data_invio: finalDate,
+                }
+            })
+            
+
+            if (!controlloNotifica && !controlloNotificaEliminata) {
+                let notificaTesto = '';
+
+                notificaTesto = `Attenzione! Domani a ${citta} potrebbe piovere. Attenzione alla piantagione: ${nome_piantagione}`;
+                const notifica = await  prisma.notifiche.create({
+                    data: {
+                        id_utente: id_utente,
+                        id_piantagione: id_piantagione,
+                        nome_piantagione: nome_piantagione,
+                        testo: notificaTesto,
+                        data_invio: finalDate,
+                        tipo: 2,
+                    }
+                });
+                const notificaEliminata = await prisma.NotificheEliminate.create({
+                    data: {
+                        id_utente: id_utente,
+                        id_piantagione: id_piantagione,
+                        tipo: 2,
+                        data_invio: finalDate,
+                    }
+                })
+
+                res.status(201).json({notifica, notificaEliminata});
+            } else {
+                res.status(400).json({error: 'errore notifca meteo'});
+            }
+        } catch(error) {
+            console.log(error);
+            console.log('errore notifica meteo');
+        }
+    })
+    
     //notifiche acqua
     app.post('/notificheAddWater', async (req, res) => {
         try {
@@ -114,8 +195,16 @@ export default function notificheRouting(app){
                     tipo: 0,
                 }
             });
+            const controlloNotificaEliminata = await prisma.notificheEliminate.findFirst({
+                where: {
+                    id_utente: id_utente,
+                    id_piantagione: id_piantagione,
+                    tipo: 0,
+                    data_invio: finalDate,
+                }
+            })
     
-            if (!controlloNotifica) {
+            if (!controlloNotifica && !controlloNotificaEliminata) {
                 let testoNotifica = '';
     
                 if (giorni == 1) {
@@ -135,7 +224,14 @@ export default function notificheRouting(app){
                             tipo: 0,
                         }
                     });
-    
+                    const notificaEliminata = await prisma.NotificheEliminate.create({
+                        data: {
+                            id_utente: id_utente,
+                            id_piantagione: id_piantagione,
+                            tipo: 0,
+                            data_invio: finalDate,
+                        }
+                    })
                     res.status(201).json(notifica);
                 } else {
                     res.status(400).json({ error: "Invalid giorni value" });
@@ -150,7 +246,7 @@ export default function notificheRouting(app){
         }
     });
     
-
+    //notifica letta
     app.put('/notificheSign', async (req, res) => {
         try {
             const signNotifica = await prisma.notifiche.update({
@@ -172,6 +268,7 @@ export default function notificheRouting(app){
         }
     })
 
+    //cambio immagine per notifica non letta
     app.get('/notificaImage', async (req, res) => {
         try{
             const notificaLetta = await prisma.notifiche.count({
@@ -193,10 +290,10 @@ export default function notificheRouting(app){
         }
     })
 
+    //eliminazione notifiche
     app.delete('/deleteNotifiche', async (req, res) => {
         try {
             
-
             const notifiche = await prisma.notifiche.deleteMany()
 
             if(notifiche){
@@ -214,4 +311,6 @@ export default function notificheRouting(app){
             res.json();
         }
     })
+
+    
 }

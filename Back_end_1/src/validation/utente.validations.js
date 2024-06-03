@@ -53,4 +53,38 @@ export function createUserValidation(req, res, next) {
       res.json({ isError: true, error: errors });
     }
   );
+};
+
+export function modificaUserValidation(req, res, next) {
+  validate.async(req.body, {
+    newNome: {
+      presence: { allowEmpty: false },
+      length: { minimum: 3 },
+    },
+    newCognome: {
+      presence: { allowEmpty: false },
+      length: { minimum: 3 },
+    },
+    newPassword: {
+      presence: {allowEmpty: false},
+      length: { minimum: 3 },
+    },
+    newRepeatPassword: {
+      equality: 'password',
+    },
+    newEmail: {
+      userExists: {},
+    },
+  }).then(
+    () => {
+      // viene eseguita quando va tutto bene
+      next();
+    },
+    (errors) => {
+      // se c'è un errore
+      res.status(403);
+      res.json({ isError: true, error: errors });
+    }
+  );
 }
+

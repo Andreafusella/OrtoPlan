@@ -50,12 +50,14 @@
             <input id="inputPasswordRegister" placeholder="******" type="password" name="password" class="input input-bordered w-full bg-white">
             <h1 class="text-black">Conferma Password</h1>
             <input id="inputRepeatPasswordRegister" placeholder="******" type="password" name="conferma_password" class="input input-bordered w-full bg-white">
+            <h1 id="error_message" class="text-red-400 hidden text-2xl text-center">Errore inserimento dati</h1>
             <div class="modal-action">
                 <button type="button" class="btn text-white" onclick="register.close()">
                 Chiudi
                 </button>
                 <button type="submit" class="btn btn-primary text-white">Registrati</button>
             </div>
+            
         </form>
     </div>
     <form method="dialog" class="modal-backdrop">
