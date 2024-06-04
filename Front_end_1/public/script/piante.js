@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const modalDescrizione = document.getElementById('modalDescrizione');
                 const modalRaccolta = document.getElementById('modalRaccolta');
                 const modalAcqua = document.getElementById('modalAcqua');
+                const modalStagioneSemina = document.getElementById('modalStagioneSemina');
+                const modalStagioneRaccolta = document.getElementById('modalStagioneRaccolta');
                 const closeModal = document.getElementById('closeModal');
 
                 let row;
@@ -58,8 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         modalTitle.textContent = pianta.nome;
                         modalImage.src = arr_img[index];
                         modalDescrizione.textContent = arr_desc[index]
-                        modalRaccolta.textContent = `Tempo di raccolta: ${pianta.t_raccolta} Giorni`;
-                        modalAcqua.textContent = `Tempo di annaffiatura: Ogni ${pianta.t_acqua} Giorni`;
+                        modalRaccolta.textContent = `Dopo ${pianta.t_raccolta} giorni`;
+                        modalAcqua.textContent = `Ogni ${pianta.t_acqua} giorni`;
+                        modalStagioneSemina.textContent = pianta.mese_inizio;
+                        modalStagioneRaccolta.textContent = pianta.mese_fine;
+
                         modal.showModal();
                     });
 

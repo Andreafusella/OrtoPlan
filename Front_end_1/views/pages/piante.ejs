@@ -22,9 +22,22 @@
                 <button id="closeModal" class="text-black">&times;</button>
             </div>
             <img id="modalImage" src="" alt="" class="h-44 mx-auto mb-4">
-            <p id="modalDescrizione" class="mb-2 text-slate-700"></p>
-            <p id="modalRaccolta" class="mb-2 text-black"></p>
-            <p id="modalAcqua" class="text-black"></p>
+            <p id="modalDescrizione" class="mb-1 text-slate-700"></p>
+            <div class="flex justify-center items-center gap-10 p-5 border-[3px] border-red-400 rounded-2xl">
+                <div class="text-center">
+                    <h1 class="mb-1 text-black p-1">Da seminare durante:</h1>
+                    <h1 class="mb-1 text-black p-1">Raccogliere circa:</h1>
+                    <h1 class="mb-1 bg-amber-700 bg-opacity-60 rounded-2xl text-black p-1">Tempo di raccolta:</h1>
+                    <h1 class="mb-1 bg-cyan-400 bg-opacity-60 rounded-2xl text-black p-1">Tempo di annaffiatura:</h1>
+                </div>
+                <div class="">
+                    <p id="modalStagioneSemina" class="mb-1 text-black p-1"></p>
+                    <p id="modalStagioneRaccolta" class="text-black p-1"></p>
+                    <p id="modalRaccolta" class="mb-1 text-amber-700 p-1"></p>
+                    <p id="modalAcqua" class="mb-1 text-cyan-400 p-1"></p>
+                </div>
+            </div>
+           
             <div class="modal-action">
                 <button type="button" class="btn text-white" onclick="modal.close()">Chiudi</button>
             </div>

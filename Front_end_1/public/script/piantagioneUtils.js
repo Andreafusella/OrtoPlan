@@ -176,10 +176,10 @@ document.addEventListener('DOMContentLoaded', async() => {
 
         calorie.textContent = data.calorie;
         grassi.textContent = data.grassi;
-        carboidrati.textContent = data.grassi;
-        potassio.textContent = data.grassi;
-        proteine.textContent = data.grassi;
-        vitamine.textContent = data.grassi;
+        carboidrati.textContent = data.carboidrati;
+        potassio.textContent = data.potassio;
+        proteine.textContent = data.proteine;
+        vitamine.textContent = data.vitamine;
 
     }
 });
