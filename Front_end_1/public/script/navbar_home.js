@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'GET',
             });
             
-            console.log(res);
             if (res.status == 201) {
                 const img = document.createElement('img');
                 const img2 = document.createElement('img');

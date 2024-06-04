@@ -138,14 +138,12 @@ async function knowAcqua(piante, piantagioni) {
         const inizio_data = moment(piantagioni.data_inizio);
 
         const giorni_passati = giorno_corrente.diff(inizio_data, 'days');
-        console.log(`Giorni passati: ${giorni_passati}`);
 
         let tempo_rimanente = t_acqua - (giorni_passati % t_acqua);
         
         if (tempo_rimanente === -1) {
             tempo_rimanente = t_acqua - 1;
         }
-        console.log(`Tempo rimanente: ${tempo_rimanente} giorni`);        
         return tempo_rimanente -1;
     } else {
         console.log('Pianta non trovata');
@@ -178,7 +176,6 @@ function knowRaccolta(piante, piantagioni) {
         }
         
         let tempo_finale = calcolaTempoRimanente();
-        console.log(tempo_finale);
         return tempo_finale;
     } else {
         console.log('Pianta non trovata');
@@ -251,6 +248,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const imageContainer = document.createElement('div');
                     imageContainer.classList.add('flex', 'gap-1', 'justify-center', 'items-center');
                     const image = document.createElement('img');
+                    // image.src = '/plants/pomodoro.png';
                     image.src = selectImage(arr_img, piantagione.id_pianta);
                     image.classList.add('h-24', 'mb-4');
                     const numeroPiante = document.createElement('h1');
@@ -530,9 +528,9 @@ async function notificheMeteo(piantagione){
         const forecast = dataForecast.list;
         const now = new Date();
         const tomorrow = new Date(now);
+        tomorrow.setDate(now.getDate() + 1);
 
         const domani = forecast.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
-
         if (domani.weather[0].main == 'Rain'){
             try {
                 const res = await fetch('http://localhost:8000/notificheMeteo',{

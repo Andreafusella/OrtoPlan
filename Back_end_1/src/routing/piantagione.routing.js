@@ -93,7 +93,6 @@ export default function pianteRouting(app){
 
     app.get('/num_piantagioni', async (req, res) => {
         try{
-            console.log(req);
             const num_piantagioni = await prisma.piantagione.count({
                 where: {
                     id_utente: +req.query.id_utente
@@ -104,6 +103,25 @@ export default function pianteRouting(app){
         } catch(error) {
             console.log(error);
             console.log('errore ricerca num piantagioni');
+        }
+    })
+
+    app.get('/getValoriNutrizionali', async (req, res) => {
+        console.log(req);
+        try {
+            const pianta = await prisma.pianta.findFirst({
+                where: {
+                    id_pianta: +req.query.id_pianta
+                }
+            })
+            if (pianta) {
+                res.status(201).json(pianta)
+            } else {
+                res.status(404).json({message: 'pianta non trovata'});
+            }
+        } catch (error) {
+            console.log(error);
+            console.log('errore valori nutrizionali');
         }
     })
 }

@@ -85,7 +85,7 @@ export default function notificheRouting(app){
                             tipo: 1,
                         }
                     });
-                    const notificaEliminata = await prisma.NotificheEliminate.create({
+                    const notificaEliminata = await prisma.notificheEliminate.create({
                         data: {
                             id_utente: id_utente,
                             id_piantagione: id_piantagione,
@@ -154,7 +154,7 @@ export default function notificheRouting(app){
                         tipo: 2,
                     }
                 });
-                const notificaEliminata = await prisma.NotificheEliminate.create({
+                const notificaEliminata = await prisma.notificheEliminate.create({
                     data: {
                         id_utente: id_utente,
                         id_piantagione: id_piantagione,
@@ -224,7 +224,7 @@ export default function notificheRouting(app){
                             tipo: 0,
                         }
                     });
-                    const notificaEliminata = await prisma.NotificheEliminate.create({
+                    const notificaEliminata = await prisma.notificheEliminate.create({
                         data: {
                             id_utente: id_utente,
                             id_piantagione: id_piantagione,

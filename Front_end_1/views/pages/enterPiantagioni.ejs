@@ -16,56 +16,82 @@
         </div>
     </div>
     
-    <div class="flex gap-10 justify-center">
-        <div>
-            <div class="bg-gray-300 p-5 rounded-2xl shadow-2xl m-5">
-                <div id="img_quantita" class="flex items-center justify-center my-4">
-                    
+    <div class="md:flex gap-10 justify-center">
+        <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl m-5">
+            <div>
+                <h1 id="citta" class="font-bold text-center text-2xl text-black"></h1>
+                <div class="my-3">
+                    <h1 class="text-black font-bold text-xl">Oggi</h1>
+                    <div id="meteo1" class="flex gap-4 justify-center items-center">
+                        <div id="imgMeteo1"></div>
+                        <div id="textMeteo1"></div>
+                    </div>
                 </div>
                 <hr>
-                <div class="flex gap-2 items-center justify-center my-3">
-                    <img src="/assets/annaffiatoio.png" class="h-14">
-                    <h1 id="annaffiatoio" class="font-bold text-2xl"></h1>
+                <div class="my-3">
+                    <h1 class="text-black font-bold text-xl">Domani</h1>
+                    <div id="meteo2" class="flex gap-4 justify-center items-center">
+                        <div id="imgMeteo2"></div>
+                        <div id="textMeteo2"></div>
+                    </div>
                 </div>
                 <hr>
-                <div class="flex gap-2 items-center justify-center my-3">
-                    <img src="/assets/raccolta.png" class="h-14">
-                    <h1 id="raccolta" class="font-bold text-2xl"></h1>
-                </div>
+                <div class="my-3">
+                    <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
+                    <div id="meteo3" class="flex gap-4 justify-center items-center">
+                        <div id="imgMeteo3"></div>
+                        <div id="textMeteo3"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div>
-            <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl m-5">
-                <div>
-                    <h1 id="citta" class="font-bold text-center text-2xl text-black"></h1>
-                    <div class="my-3">
-                        <h1 class="text-black font-bold text-xl">Oggi</h1>
-                        <div id="meteo1" class="flex gap-4 justify-center items-center">
-                            <div id="imgMeteo1"></div>
-                            <div id="textMeteo1"></div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="my-3">
-                        <h1 class="text-black font-bold text-xl">Domani</h1>
-                        <div id="meteo2" class="flex gap-4 justify-center items-center">
-                            <div id="imgMeteo2"></div>
-                            <div id="textMeteo2"></div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="my-3">
-                        <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
-                        <div id="meteo3" class="flex gap-4 justify-center items-center">
-                            <div id="imgMeteo3"></div>
-                            <div id="textMeteo3"></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="bg-gray-300 p-10 rounded-2xl shadow-2xl m-5">
+            <div id="img_quantita" class="flex items-center justify-center my-4"></div>
+            <hr>
+            <div class="flex gap-2 items-center justify-center my-3">
+                <img src="/assets/annaffiatoio.png" class="h-14">
+                <h1 id="annaffiatoio" class="font-bold text-2xl"></h1>
             </div>
+            <hr>
+            <div class="flex gap-2 items-center justify-center my-3">
+                <img src="/assets/raccolta.png" class="h-14">
+                <h1 id="raccolta" class="font-bold text-2xl"></h1>
+            </div> 
         </div>
     </div>
+
+    <div class="bg-gray-300 py-10 mt-10">
+        <h1 class="text-center text-black font-bold md:text-4xl text-2xl mb-5">INFORMAZIONI GENERALI</h1>
+        <div class="md:flex gap-40 items-center mx-10 justify-center">
+            <img id="imgDescription" class="md:m-0 mx-auto">
+            <div class="text-center text-black font-bold w-min-[200px] w-[500px] md:m-0 mx-auto">
+                <h1 id="descrizionePianta" class=""></h1>
+                <div class="border-[4px] border-orange-400 border-solid rounded-2xl mt-5">
+                    <h1 class="text-2xl my-3">Valori nutrizionali</h1>
+                    <div class="flex justify-center items-center gap-10">
+                        <div class="mb-5">
+                            <h1>Calorie</h1>
+                            <h1>Grassi</h1>
+                            <h1>Carboidrati</h1>
+                            <h1>Potassio</h1>
+                            <h1>Proteine</h1>
+                            <h1>Vitamine</h1>
+                        </div>
+                        <div class="mb-5">
+                            <h1 id="calorie"></h1>
+                            <h1 id="grassi"></h1>
+                            <h1 id="carboidrati"></h1>
+                            <h1 id="potassio"></h1>
+                            <h1 id="proteine"></h1>
+                            <h1 id="vitamine"></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
     <!-- <h1 class="text-black">Weather App</h1>
     <input id="cityInput" placeholder="Enter city" type="text" class="input input-bordered w-full bg-white">

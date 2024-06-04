@@ -1,6 +1,5 @@
 const currentPiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
 
-console.log(currentPiantagione);
 
 const n_slot = +currentPiantagione.n_slot;
 const nome = currentPiantagione.nome;
@@ -41,19 +40,60 @@ async function confermaEliminazione(){
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async() => {
     
+    function selectImage(arr_img, id_pianta){
+        return arr_img[id_pianta - 1];
+    }
+    
+    const arr_desc = [
+        "Il pomodoro (Solanum lycopersicum) è una pianta della famiglia delle Solanaceae,originaria dell'America centrale e meridionale. Coltivato in tutto il mondo, è noto per i suoi frutti rossi, succosi e nutrienti, ricchi di vitamine A e C.",
+        "Il basilico è una pianta aromatica dal profumo intenso e fresco, ampiamente utilizzata in cucina mediterranea. Apprezzato per il suo sapore unico, il basilico è un ingrediente fondamentale in piatti come il pesto e la caprese.",
+        "Il mais è un cereale originario dell'America centrale e meridionale, noto per le sue spighe gialle caratteristiche. È una fonte importante di carboidrati, fibre, vitamine e minerali, ed è utilizzato in molte cucine del mondo per preparare piatti come tortillas, polenta, popcorn e insalate. Grazie alla sua versatilità e al suo valore nutrizionale, il mais è un alimento ampiamente coltivato e consumato in tutto il mondo.",
+        "La lattuga è una verdura a foglia verde, croccante e dal sapore delicato, comunemente utilizzata nelle insalate e come guarnizione in molti piatti. È ricca di acqua, vitamine, minerali e fibre, rendendola un'opzione salutare per arricchire la dieta quotidiana.",
+        "Le carote sono radici commestibili di colore arancione brillante, ricche di beta-carotene, vitamine e antiossidanti. Spesso consumate crude come snack o in insalate, le carote possono anche essere cotte, grigliate o usate come ingrediente in una varietà di piatti, dai sughi alle zuppe. La loro dolcezza naturale le rende popolari sia tra adulti che bambini, mentre il loro contenuto di fibre e nutrienti le rende un'aggiunta nutriente a una dieta equilibrata.",
+        "Le melanzane sono ortaggi apprezzati per la loro versatilità in cucina, essendo protagoniste di ricette come la parmigiana o le melanzane ripiene. Di colore viola scuro, sono ricche di fibre e antiossidanti, contribuendo così a una dieta equilibrata e salutare.",
+        "I peperoni, ortaggi dal gusto succulento e versatile, crescono meglio in climi caldi e terreni ben drenati. Disponibili in una varietà di colori e sapori, dalla dolcezza del rosso al pizzico del verde, arricchiscono piatti e insalate con il loro vibrante aroma e colore. Coltivare peperoni può essere gratificante, offrendo una varietà di opzioni culinarie in cucina.",
+        "I fagioli, preziosi legumi ricchi di proteine e fibre, prosperano in terreni ben drenati e soleggiati. Con una vasta gamma di varietà, dai fagioli neri ai cannellini, offrono versatilità in cucina, arricchendo zuppe, insalate e piatti principali. La coltivazione dei fagioli può essere gratificante, offrendo un'abbondante raccolta di legumi nutrienti per una cucina sana e deliziosa.",
+        "I limoni, dai loro alberi sempreverdi e rigogliosi, regalano un'esplosione di freschezza e vitalità. Le loro brillanti sfumature gialle illuminano gli orti e i giardini, mentre i loro frutti succosi e profumati aggiungono un tocco di acidità e vivacità a piatti dolci e salati. Coltivare limoni richiede cure amorevoli e pazienza, ma le ricompense sono frutti deliziosi e una fragranza che pervade l'aria, donando gioia e gusto alla vita quotidiana.",
+        "Le arance, frutti iconici degli agrumeti, si distinguono per il loro colore brillante e il sapore succoso e dolce. Le piante di arancio, con le loro foglie verde scuro e i fiori profumati, aggiungono bellezza e vitalità al paesaggio. Coltivarle richiede un clima caldo e ben drenato, ma la ricompensa è un raccolto di frutti deliziosi, ricchi di vitamina C e perfetti per spremute fresche o gustosi dessert.",
+    ]
+
+    const arr_img = [
+        '/plants/pomodoro.png',
+        '/plants/basilico.png',
+        '/plants/mais.png',
+        '/plants/lattuga.png',
+        '/plants/carota.png',
+        '/plants/melanzana.png',
+        '/plants/peperone.png',
+        '/plants/fagiolo.png',
+        '/plants/limone.png',
+        '/plants/arancia.png',
+    ];
+
     const currentPiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
 
     const img_quantitaCell = document.getElementById('img_quantita');
     const imgOrtaggio = document.createElement('img');
     const quantita = document.createElement('h1');
-    const acquaCell = document.getElementById('annaffiatoio')
+    const acquaCell = document.getElementById('annaffiatoio');
     const raccoltaCell = document.getElementById('raccolta');
+    const imgDescription = document.getElementById('imgDescription');
+    const descrizionePianta = document.getElementById('descrizionePianta');
+
+    const calorie = document.getElementById('calorie');
+    const grassi = document.getElementById('grassi');
+    const carboidrati = document.getElementById('carboidrati');
+    const potassio = document.getElementById('potassio');
+    const proteine = document.getElementById('proteine');
+    const vitamine = document.getElementById('vitamine');
+
+    const id_pianta = +currentPiantagione.id_pianta;
 
     acquaCell.textContent = +currentPiantagione.t_acqua;
     raccoltaCell.textContent = +currentPiantagione.t_raccolta;
-    if (+currentPiantagione.t_acqua >= 2 && +currentPiantagione.t_acqua < 5) {
+    if (+currentPiantagione.t_acqua >= 2) {
         acquaCell.classList.add('text-cyan-600');
     }else if (+currentPiantagione.t_acqua < 2) {
         acquaCell.classList.add('text-orange-400');
@@ -75,9 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
     img_quantitaCell.appendChild(imgOrtaggio);
     img_quantitaCell.appendChild(quantita);
 
+    const img = document.createElement('img');
+    imgDescription.src = selectImage(arr_img, id_pianta)
+    imgDescription.classList.add('h-72');
+
+    descrizionePianta.textContent = arr_desc[id_pianta - 1];
+
 
     //funzione per il meteo
-    //meteo();
+    meteo();
     async function meteo(){
         let citta = ''
         const res = await fetch('http://localhost:8000/getCittaPiantagione', {
@@ -120,6 +166,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(error);
         }
     }
+
+    const res = await fetch(`http://localhost:8000/getValoriNutrizionali?id_pianta=${id_pianta}`, {
+        method: 'GET',
+    });
+
+    if (res.status == 201) {
+        const data = await res.json();
+
+        calorie.textContent = data.calorie;
+        grassi.textContent = data.grassi;
+        carboidrati.textContent = data.grassi;
+        potassio.textContent = data.grassi;
+        proteine.textContent = data.grassi;
+        vitamine.textContent = data.grassi;
+
+    }
 });
 
 
@@ -144,7 +206,7 @@ function displayWeather(oggi, dataForecast, citta) {
     const meteo3 = document.getElementById('imgMeteo3');
     const textMeteo3 = document.getElementById('textMeteo3');
     const h1citta = document.getElementById('citta');
-    h1citta.textContent = citta;
+    h1citta.textContent = `📍${citta}`;
 
     const img1 = document.createElement('img');
     const h1 = document.createElement('h1');

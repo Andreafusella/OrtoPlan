@@ -4,7 +4,6 @@ import prisma from "../../db/prisma.js";
 const DB_PATH = "./db/users.json";
 
 validate.validators.userExists = function (value, options, key, attributes) {
-  console.log(value);
   return new Promise(async (res, rej) => {
     const user = await prisma.credenziali.findUnique({
       where: {

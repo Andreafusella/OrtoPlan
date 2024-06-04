@@ -66,6 +66,7 @@ function displayWeather(
     oggiNapoli, dataForecastNapoli,
     ) {
 
+
     // Previsioni per domani e dopodomani
     const forecastMilano = dataForecastMilano.list;
     const forecastRoma = dataForecastRoma.list;
@@ -86,6 +87,8 @@ function displayWeather(
     const dopodomaniPescara = forecastPescara.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
     const domaniNapoli = forecastNapoli.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
     const dopodomaniNapoli = forecastNapoli.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
+    console.log(domaniMilano);
+    console.log(dopodomaniMilano);
     milano();
     roma();
     pescara();
@@ -93,7 +96,7 @@ function displayWeather(
 
     //milano
     function milano(){
-
+       
         const imgMeteo1 = document.getElementById('imgMeteo1');
         const textMeteo1 = document.getElementById('textMeteo1');
         const imgMeteo2 = document.getElementById('imgMeteo2');
@@ -239,7 +242,7 @@ function displayWeather(
         } else {
             h4.textContent = 'Meteo attualmente non disponibile';
         }
-    
+        console.log(oggiRoma, domaniRoma);
         //domani
         if (domaniRoma.weather[0].main == 'Clear') {
             img5.src = '/meteo/sole.png';
