@@ -107,7 +107,6 @@ export default function pianteRouting(app){
     })
 
     app.get('/getValoriNutrizionali', async (req, res) => {
-        console.log(req);
         try {
             const pianta = await prisma.pianta.findFirst({
                 where: {
