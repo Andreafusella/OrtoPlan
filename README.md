@@ -52,7 +52,7 @@ Avvio del Front-end:
 cd frontend
 npx http-server
 
-##Struttura del progetto
+## Struttura del progetto
 ```bash
 OrtoPlan/
 ├── Back_end_1/
@@ -95,5 +95,12 @@ OrtoPlan/
 │           └── components/
 ├── LICENSE
 └── README.md
+```
+
+## Clonare il Repository
+```bash
+git clone https://github.com/tuo-utente/OrtoPlan.git
+cd OrtoPlan
+```
 
 
