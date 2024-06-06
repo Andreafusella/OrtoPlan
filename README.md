@@ -53,7 +53,7 @@ cd frontend
 npx http-server
 
 ##Struttura del progetto
-
+```bash
 OrtoPlan/
 ├── Back_end_1/
 │   ├── db/
@@ -96,9 +96,4 @@ OrtoPlan/
 ├── LICENSE
 └── README.md
 
-### Clonare il Repository
-
-```bash
-git clone https://github.com/Andreafusella/OrtoPlan.git
-cd OrtoPlan
 
