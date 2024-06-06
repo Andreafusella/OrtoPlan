@@ -34,21 +34,21 @@ OrtoPlan è un'applicazione web progettata per aiutare gli utenti a gestire la c
 - MySQL
 
 ## Installazione
-Installazione dipendenze:
+### Installazione dipendenze:
 cd backend
 npm install
 
-Configurazione del Database:
+### Configurazione del Database:
 Configura il tuo database PostgreSQL o MySQL e aggiorna il file di configurazione con le credenziali appropriate.
 
-Configurazione delle variabili d'ambiente:
+### Configurazione delle variabili d'ambiente:
 Nel file `.env` situato nel backend, cambia la variabile "DATABASE_URL" con il percorso esatto del tuo database
 
-Avvio del server:
+### Avvio del server:
 cd backend
 npm start
 
-Avvio del Front-end:
+### Avvio del Front-end:
 cd frontend
 npx http-server
 
