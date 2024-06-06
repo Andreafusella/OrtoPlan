@@ -1,4 +1,3 @@
-console.log('funzionaaaaa');
 
 const loginForm = document.querySelector('#loginForm');
 const loginModal = document.querySelector('#login');

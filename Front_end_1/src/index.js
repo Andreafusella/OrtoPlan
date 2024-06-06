@@ -51,6 +51,12 @@ app.get('/profilo', (req, res) => {
     res.render('pages/profilo');
 })
 
+app.get('/error404', (req, res) => {
+    res.render('pages/error404');
+})
+
+
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

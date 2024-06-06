@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else if (notifica.tipo == 2) {
                         imgCell.src = '/assets/pioggia.png';
                         imgCell.classList.add('h-12')
+                    } else if (notifica.tipo == 3) {
+                        imgCell.src = '/assets/caldo.png';
+                        imgCell.classList.add('h-12')
+                    }else if (notifica.tipo == 4) {
+                        imgCell.src = '/assets/pioggia.png';
+                        imgCell.classList.add('h-12')
                     }
 
                     idCell.appendChild(imgCell);
@@ -108,11 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         const titolo = document.createElement('h1');
 
                         if (notifica.tipo == 0) {
-                            titolo.textContent = 'Annaffiare';
+                            titolo.textContent = '💧 Annaffiare 💧';
                         } else if (notifica.tipo == 1) {
-                            titolo.textContent = 'Raccolta';
+                            titolo.textContent = '🍾 Raccolta 🍾';
                         } else if (notifica.tipo == 2) {
-                            titolo.textContent = 'Pioggia';
+                            titolo.textContent = '🌧️ Pioggia 🌧️';
+                        } else if (notifica.tipo ==  3) {
+                            titolo.textContent = '🔥 Alta temperatura 🔥';
+                        } else if (notifica.tipo == 4) {
+                            titolo.textContent = '🌧️ Pioggia 🌧️';
                         }
                         titolo.classList.add('text-3xl', 'text-black', 'font-bold', 'mb-3', 'text-center');
 

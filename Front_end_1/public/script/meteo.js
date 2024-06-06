@@ -495,3 +495,178 @@ function displayWeather(
         textMeteo12.appendChild(temp12);
     }
 }
+
+const meteoCittaForm = document.getElementById('meteoCittaForm');
+
+meteoCittaForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const citta = e.target.citta.value;
+    const apiKey = "30b35159cd1dfce6826a18b5fbbfacfc";
+    const urlCurrent = `http://api.openweathermap.org/data/2.5/weather?q=${citta}&appid=${apiKey}&units=metric`;
+    const urlForecast = `http://api.openweathermap.org/data/2.5/forecast?q=${citta}&appid=${apiKey}&units=metric`;
+
+    try {
+        const responseCurrent = await fetch(urlCurrent);
+        const responseForecast = await fetch(urlForecast)
+        const cityNotFound = document.getElementById('cityNotFound');
+        const error = document.getElementById('error');
+        const meteoGenerale = document.getElementById('meteoGenerale');
+        const meteoPersonalizzato = document.getElementById('divRicercaMeteo');
+
+        if (!responseCurrent.ok) {
+            cityNotFound.textContent = 'Città non trovata';
+            cityNotFound.classList.add('text-red-500', 'font-bold');
+            cityNotFound.classList.remove('hidden');
+            return;
+        }
+        if (!responseForecast.ok) {
+            error.textContent = 'Previsioni non disponibili';
+            error.classList.add('text-red-500', 'font-bold');
+            error.classList.remove('hidden');
+            return;
+        }
+
+
+        meteoGenerale.classList.add('hidden');
+        cityNotFound.classList.add('hidden');
+        meteoPersonalizzato.classList.remove('hidden');
+        error.classList.add('hidden');
+
+        const imgMeteo1 = document.getElementById('imgMeteo1Personale');
+        const imgMeteo2 = document.getElementById('imgMeteo2Personale');
+        const imgMeteo3 = document.getElementById('imgMeteo3Personale');
+
+        const textMeteo1 = document.getElementById('textMeteo1Personale');
+        const textMeteo2 = document.getElementById('textMeteo2Personale');
+        const textMeteo3 = document.getElementById('textMeteo3Personale');
+
+        imgMeteo1.innerHTML = '';
+        imgMeteo2.innerHTML = '';
+        imgMeteo3.innerHTML = '';
+        textMeteo1.innerHTML = '';
+        textMeteo2.innerHTML = '';
+        textMeteo3.innerHTML = '';
+
+        const oggi = await responseCurrent.json();
+        const dataForecast = await responseForecast.json();
+
+        console.log(dataForecast);
+        displayWeatherCittaScelta(oggi, dataForecast, citta);
+    } catch(error) {
+        console.log(error);
+    }
+})
+
+function displayWeatherCittaScelta(oggi, dataForecast, citta){
+
+    const nomeCitta = document.getElementById('nomeCitta');
+    nomeCitta.textContent = citta;
+
+    const forecast = dataForecast.list;
+    const now = new Date();
+    const tomorrow = new Date(now);
+    const dayAfterTomorrow = new Date(now);
+    tomorrow.setDate(now.getDate() + 1);
+    dayAfterTomorrow.setDate(now.getDate() + 2);
+
+    const domani = forecast.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
+    const dopodomani = forecast.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
+
+    const imgMeteo1 = document.getElementById('imgMeteo1Personale');
+    const imgMeteo2 = document.getElementById('imgMeteo2Personale');
+    const imgMeteo3 = document.getElementById('imgMeteo3Personale');
+
+    const textMeteo1 = document.getElementById('textMeteo1Personale');
+    const textMeteo2 = document.getElementById('textMeteo2Personale');
+    const textMeteo3 = document.getElementById('textMeteo3Personale');
+
+    const img1 = document.createElement('img');
+    const h1 = document.createElement('h1');
+    const temp1 = document.createElement('h1');
+    const img2 = document.createElement('img');
+    const h2 = document.createElement('h1');
+    const temp2 = document.createElement('h1');
+    const img3 = document.createElement('img');
+    const h3 = document.createElement('h1');
+    const temp3 = document.createElement('h1');
+
+    h1.classList.add('text-black', 'font-bold', 'text-lg');
+    temp1.classList.add('text-black', 'font-bold', 'text-lg');
+    img1.classList.add('h-10');
+    h2.classList.add('text-black', 'font-bold', 'text-lg');
+    temp2.classList.add('text-black', 'font-bold', 'text-lg');
+    img2.classList.add('h-10');
+    h3.classList.add('text-black', 'font-bold', 'text-lg');
+    temp3.classList.add('text-black', 'font-bold', 'text-lg');
+    img3.classList.add('h-10');
+
+    //oggi
+    if (oggi.weather[0].main == 'Clear') {
+        img1.src = '/meteo/sole.png';
+        h1.textContent = 'Soleggiato';
+        temp1.textContent = `Temperatura: ${oggi.main.temp} C°`;
+
+    } else if (oggi.weather[0].main == 'Clouds') {
+        img1.src = '/meteo/nuvole.png';
+        h1.textContent = 'Nuvoloso';
+        temp1.textContent = `Temperatura: ${oggi.main.temp} C°`;
+
+    }else if (oggi.weather[0].main == 'Rain'){
+        img1.src = '/meteo/pioggia.png';
+        h1.textContent = 'Pioggia';
+        temp1.textContent = `Temperatura: ${oggi.main.temp} C°`;
+    } else {
+        h1.textContent = 'Meteo attualmente non disponibile';
+    }
+    
+    //domani
+    if (domani.weather[0].main == 'Clear') {
+        img2.src = '/meteo/sole.png';
+        h2.textContent = 'Soleggiato';
+        temp2.textContent = `Temperatura: ${domani.main.temp} C°`;
+
+    } else if (domani.weather[0].main == 'Clouds') {
+        img2.src = '/meteo/nuvole.png';
+        h2.textContent = 'Nuvoloso';
+        temp2.textContent = `Temperatura: ${domani.main.temp} C°`;
+
+    }else if (domani.weather[0].main == 'Rain'){
+        img2.src = '/meteo/pioggia.png';
+        h2.textContent = 'Pioggia';
+        temp2.textContent = `Temperatura: ${domani.main.temp} C°`;
+    } else {
+        h2.textContent = 'Meteo attualmente non disponibile';
+    }
+
+    //dopodomani
+    if (dopodomani.weather[0].main == 'Clear') {
+        img3.src = '/meteo/sole.png';
+        h3.textContent = 'Soleggiato';
+        temp3.textContent = `Temperatura: ${dopodomani.main.temp} C°`;
+
+    } else if (dopodomani.weather[0].main == 'Clouds') {
+        img3.src = '/meteo/nuvole.png';
+        h3.textContent = 'Nuvoloso';
+        temp3.textContent = `Temperatura: ${dopodomani.main.temp} C°`;
+
+    }else if (dopodomani.weather[0].main == 'Rain'){
+        img3.src = '/meteo/pioggia.png';
+        h3.textContent = 'Pioggia';
+        temp3.textContent = `Temperatura: ${dopodomani.main.temp} C°`;
+    } else {
+        h3.textContent = 'Meteo attualmente non disponibile';
+    }
+
+    imgMeteo1.appendChild(img1);
+    textMeteo1.appendChild(h1);
+    textMeteo1.appendChild(temp1);
+
+    imgMeteo2.appendChild(img2);
+    textMeteo2.appendChild(h2);
+    textMeteo2.appendChild(temp2);
+
+    imgMeteo3.appendChild(img3);
+    textMeteo3.appendChild(h3);
+    textMeteo3.appendChild(temp3);
+}

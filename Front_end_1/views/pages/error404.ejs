@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erorr 404</title>
+    <link rel="stylesheet" href="/style/output.css">
+</head>
+<body class="bg-white min-h-screen">
+    <%- include ('components/navbar_home') %>
+    <div class="flex justify-center items-center">
+        <div>
+            <div class="md:flex gap-5 items-center justify-center">
+                <img src="/plants/pomodoro_piange.png" class="md:h-[350px] h-[300px] m-auto">
+                <div class="text-center font-extralight">
+                    <h1 class="text-2xl font-bold text-black mb-5">Awww...Non piangere</h1>
+                    <h1 class="text-xl text-black mb-5">E' solamente un errore <span class="text-red-500 font-bold">404!</span></h1>
+                    <h1 class="text-xl text-black mb-2">Al momento non riusciamo a trovare la risorsa che stavi cercando</h1>
+                    <h1 class="text-xl text-black mb-10">Prenditi una pausa e fai una partita con me a<span class="text-green-500 font-bold"> INDOVINO!</span> </h1>
+                    <button onclick="gameStart()" class="btn btn-primary bg-green-500 text-white border-green-500 hover:border-green-600 hover:bg-green-600">Gioca ora! 🎮</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game" class="flex justify-center items-center mb-5">
+        <div>
+            <form id="formDomanda">
+                <h1 id="domanda"></h1>
+                <div class="flex gap-5 justify-center items-center">
+                    <input id="risposta" name="risposta" type="text" class=" w-[200px] input input-bordered w-full bg-slate-300 text-black">
+                    <button type="button" class="btn btn-primary text-white">Verifica</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <%- include ('components/footer') %>
+    <script src="/script/error404.js"></script>
+</body>
+</html>

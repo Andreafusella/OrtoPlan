@@ -5,146 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meteo</title>
     <link rel="stylesheet" href="/style/output.css">
+    <link id="icon" rel="icon" type="image/png" href="/assets/logo.png">
 </head>
 <body class="bg-white min-h-screen">
     <%- include ('components/navbar_home') %>
 
-    <div class="flex justify-center items-center m-10">
-        <div class="flex flex-col md:flex-row gap-16">
-            
-            <!-- milano -->
-            <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
-                <div class="flex gap-2 items-center justify-center">
-                    <h1 class="text-3xl">📍</h1>
-                    <h1 class="text-black font-bold text-2xl">Milano</h1>
-                </div>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Oggi</h1>
-                    <div id="meteo1" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo1"></div>
-                        <div id="textMeteo1"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Domani</h1>
-                    <div id="meteo2" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo2"></div>
-                        <div id="textMeteo2"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
-                    <div id="meteo3" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo3"></div>
-                        <div id="textMeteo3"></div>
-                    </div>
-                </div>
+    <div class="flex items-center justify-center my-10">
+        <form id="meteoCittaForm">
+            <div class="flex items-center justify-center gap-5">
+                <input id="inputCitta" type="text" placeholder="Città" name="citta" class="input input-bordered border-gray-600 focus:border-gray-800 w-full bg-white">
+                <button type="submit" class="text-3xl border-[4px] p-1 border-cyan-300 rounded-2xl">🔍</button>
             </div>
-    
-            <!-- roma -->
-            <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
-                <div class="flex gap-2 items-center justify-center">
-                    <h1 class="text-3xl">📍</h1>
-                    <h1 class="text-black font-bold text-2xl">Roma</h1>
-                </div>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Oggi</h1>
-                    <div id="meteo4" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo4"></div>
-                        <div id="textMeteo4"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Domani</h1>
-                    <div id="meteo5" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo5"></div>
-                        <div id="textMeteo5"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
-                    <div id="meteo6" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo6"></div>
-                        <div id="textMeteo6"></div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+            <h1 id="cityNotFound" class="hidden"></h1>
+            <h1 id="error" class="hidden"></h1>
+        </form>
     </div>
 
-    <div class="flex justify-center items-center m-10">
-        <div class="flex flex-col md:flex-row gap-16">
-            <!-- Pescara -->
+    <!-- meteo personalizzato -->
+    <div id="divRicercaMeteo" class="hidden">
+        <div class="flex justify-center items-center m-10">
             <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
                 <div class="flex gap-2 items-center justify-center">
                     <h1 class="text-3xl">📍</h1>
-                    <h1 class="text-black font-bold text-2xl">Pescara</h1>
+                    <h1 id="nomeCitta" class="text-black font-bold text-2xl"></h1>
                 </div>
                 <div class="my-3">
                     <h1 class="text-black font-bold text-xl">Oggi</h1>
-                    <div id="meteo7" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo7"></div>
-                        <div id="textMeteo7"></div>
+                    <div id="meteo1Personale" class="flex justify-center items-center gap-4">
+                        <div id="imgMeteo1Personale"></div>
+                        <div id="textMeteo1Personale"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="my-3">
                     <h1 class="text-black font-bold text-xl">Domani</h1>
-                    <div id="meteo8" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo8"></div>
-                        <div id="textMeteo8"></div>
+                    <div id="meteo2Personale" class="flex justify-center items-center gap-4">
+                        <div id="imgMeteo2Personale"></div>
+                        <div id="textMeteo2Personale"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="my-3">
                     <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
-                    <div id="meteo9" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo9"></div>
-                        <div id="textMeteo9"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Napoli -->
-            <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
-                <div class="flex gap-2 items-center justify-center">
-                    <h1 class="text-3xl">📍</h1>
-                    <h1 class="text-black font-bold text-2xl">Napoli</h1>
-                </div>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Oggi</h1>
-                    <div id="meteo10" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo10"></div>
-                        <div id="textMeteo10"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Domani</h1>
-                    <div id="meteo11" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo11"></div>
-                        <div id="textMeteo11"></div>
-                    </div>
-                </div>
-                <hr>
-                <div class="my-3">
-                    <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
-                    <div id="meteo12" class="flex justify-center items-center gap-4">
-                        <div id="imgMeteo12"></div>
-                        <div id="textMeteo12"></div>
+                    <div id="meteo3Personale" class="flex justify-center items-center gap-4">
+                        <div id="imgMeteo3Personale"></div>
+                        <div id="textMeteo3Personale"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div>
+    <div id="meteoGenerale">
+        <div class="flex justify-center items-center m-10">
+            <div class="flex flex-col md:flex-row gap-16">
+                
+                <!-- milano -->
+                <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
+                    <div class="flex gap-2 items-center justify-center">
+                        <h1 class="text-3xl">📍</h1>
+                        <h1 class="text-black font-bold text-2xl">Milano</h1>
+                    </div>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Oggi</h1>
+                        <div id="meteo1" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo1"></div>
+                            <div id="textMeteo1"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Domani</h1>
+                        <div id="meteo2" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo2"></div>
+                            <div id="textMeteo2"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
+                        <div id="meteo3" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo3"></div>
+                            <div id="textMeteo3"></div>
+                        </div>
+                    </div>
+                </div>
         
+                <!-- roma -->
+                <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
+                    <div class="flex gap-2 items-center justify-center">
+                        <h1 class="text-3xl">📍</h1>
+                        <h1 class="text-black font-bold text-2xl">Roma</h1>
+                    </div>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Oggi</h1>
+                        <div id="meteo4" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo4"></div>
+                            <div id="textMeteo4"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Domani</h1>
+                        <div id="meteo5" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo5"></div>
+                            <div id="textMeteo5"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
+                        <div id="meteo6" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo6"></div>
+                            <div id="textMeteo6"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    
+        <div class="flex justify-center items-center m-10">
+            <div class="flex flex-col md:flex-row gap-16">
+                <!-- Pescara -->
+                <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
+                    <div class="flex gap-2 items-center justify-center">
+                        <h1 class="text-3xl">📍</h1>
+                        <h1 class="text-black font-bold text-2xl">Pescara</h1>
+                    </div>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Oggi</h1>
+                        <div id="meteo7" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo7"></div>
+                            <div id="textMeteo7"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Domani</h1>
+                        <div id="meteo8" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo8"></div>
+                            <div id="textMeteo8"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
+                        <div id="meteo9" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo9"></div>
+                            <div id="textMeteo9"></div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Napoli -->
+                <div class="bg-gray-300 p-4 rounded-2xl shadow-2xl">
+                    <div class="flex gap-2 items-center justify-center">
+                        <h1 class="text-3xl">📍</h1>
+                        <h1 class="text-black font-bold text-2xl">Napoli</h1>
+                    </div>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Oggi</h1>
+                        <div id="meteo10" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo10"></div>
+                            <div id="textMeteo10"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Domani</h1>
+                        <div id="meteo11" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo11"></div>
+                            <div id="textMeteo11"></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="my-3">
+                        <h1 class="text-black font-bold text-xl">Dopo Domani</h1>
+                        <div id="meteo12" class="flex justify-center items-center gap-4">
+                            <div id="imgMeteo12"></div>
+                            <div id="textMeteo12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    
 
     <%- include ('components/footer') %>
     <script src="/script/meteo.js"></script>

@@ -5,7 +5,7 @@ import authRouting from './routing/auth.routing.js';
 import pianteRouting from './routing/piante.routing.js';
 import piantagioneRouting from './routing/piantagione.routing.js';
 import notificheRouting from './routing/notifiche.routing.js';
-import saveDataRouting from './routing/savedata.routing.js';
+
 import cors from 'cors';
 import validate from 'validate.js';
 import moment from 'moment';
@@ -37,7 +37,7 @@ authRouting(app);
 pianteRouting(app);
 piantagioneRouting(app);
 notificheRouting(app);
-saveDataRouting(app);
+
 
 
 app.listen(process.env.PORT, () =>{

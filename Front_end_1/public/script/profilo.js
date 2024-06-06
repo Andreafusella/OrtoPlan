@@ -7,13 +7,12 @@ const id_utente = +utente.id_utente;
 const nome = document.getElementById('nome');
 const cognome = document.getElementById('cognome');
 const email = document.getElementById('email');
-const password = document.getElementById('password');
 const n_piantagioni = document.getElementById('n_piantagioni');
 
 nome.textContent = utente.utente.nome;
 cognome.textContent = utente.utente.cognome;
 email.textContent = utente.email;
-password.textContent = utente.password;
+
 
 function openModificaModal(){
     document.getElementById('inputNome').value = utente.utente.nome;
