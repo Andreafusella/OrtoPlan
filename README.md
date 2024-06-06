@@ -38,16 +38,67 @@ Installazione dipendenze:
 cd backend
 npm install
 
+Configurazione del Database:
+Configura il tuo database PostgreSQL o MySQL e aggiorna il file di configurazione con le credenziali appropriate.
+
+Configurazione delle variabili d'ambiente:
+Nel file `.env` situato nel backend, cambia la variabile "DATABASE_URL" con il percorso esatto del tuo database
+
 Avvio del server:
 cd backend
 npm start
 
-Configurazione del Database:
-Configura il tuo database PostgreSQL o MySQL e aggiorna il file di configurazione con le credenziali appropriate.
+Avvio del Front-end:
+cd frontend
+npx http-server
 
+##Struttura del progetto
+
+OrtoPlan/
+├── Back_end_1/
+│   ├── db/
+│   │   └── prisma.js
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   │   └── migration
+│   │   └── schema.prisma
+│   └── src/
+│       ├── index.js
+│       ├── middleware/
+│       ├── routing/
+│       │   ├── auth.routing.js
+│       │   ├── notifiche.routing.js
+│       │   ├── piantagione.routing.js
+│       │   ├── piante.routing.js
+│       │   └── user.routing.js
+│       └── validation/
+│           ├── piantagione.validations.js
+│           └── utente.validations.js
+├── Front_end_1/
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public/
+│   │   ├── assets/
+│   │   ├── meteo/
+│   │   ├── plants/
+│   │   ├── script/
+│   │   └── style/
+│   ├── src/
+│   │   └── index.js
+│   ├── tailwind.config.js
+│   └── views/
+│       └── pages/
+│           └── components/
+├── LICENSE
+└── README.md
 
 ### Clonare il Repository
 
 ```bash
-git clone https://github.com/tuo-utente/OrtoPlan.git
+git clone https://github.com/Andreafusella/OrtoPlan.git
 cd OrtoPlan
+
