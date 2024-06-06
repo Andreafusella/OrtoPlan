@@ -52,6 +52,11 @@ npm start
 cd frontend
 npx http-server
 
+## Clonare il Repository
+```bash
+git clone https://github.com/tuo-utente/OrtoPlan.git
+cd OrtoPlan
+```
 ## Struttura del progetto
 ```bash
 OrtoPlan/
@@ -96,11 +101,4 @@ OrtoPlan/
 ├── LICENSE
 └── README.md
 ```
-
-## Clonare il Repository
-```bash
-git clone https://github.com/tuo-utente/OrtoPlan.git
-cd OrtoPlan
-```
-
 
