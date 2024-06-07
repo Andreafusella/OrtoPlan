@@ -3081,6 +3081,10 @@ html:has(.drawer-toggle:checked) {
   width: 10px;
 }
 
+.w-\[400px\] {
+  width: 400px;
+}
+
 .max-w-full {
   max-width: 100%;
 }

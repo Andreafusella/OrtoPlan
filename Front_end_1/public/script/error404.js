@@ -101,6 +101,7 @@ function getRandomQuestion() {
     if (questionCount >= maxQuestions) {
 
         const messaggio = document.getElementById('messaggio');
+        const messaggioConsiglio = document.getElementById('messaggioConsiglio');
         const img = document.getElementById('imgPunteggio');
         img.classList.add('h-[350px]');
         const punteggio = document.getElementById('punteggio');
@@ -111,6 +112,7 @@ function getRandomQuestion() {
         if (giuste >= 0 && giuste <= 3) {
             messaggio.textContent = `Non sei stato molto bravo!`;
             img.src = '/plants/peperone_piange.png';
+            messaggioConsiglio.textContent = '(shhh.... meglio andare a ripassare...)';
         } else if (giuste > 3 && giuste < 8) {
             messaggio.textContent = `Ci sai fare abbastanza con gli ortaggi!`;
             img.src = 'plants/cocomero_felice.png';
