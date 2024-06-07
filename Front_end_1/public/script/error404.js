@@ -82,127 +82,77 @@ const risposte = [
     "Beta-carotene",
     "Parthenocarpia"
 ]
-const domanda = document.getElementById('domanda');
-const rispostaInput = document.getElementById('risposta');
-const form = document.getElementById('formDomanda');
-
-let indovinate = 0;
+let giuste = 0;
 let sbagliate = 0;
-let domandeRimaste = 10;
+let currentIndex = -1;
+let questionCount = 0;
+const maxQuestions = 10;
 
-// Funzione per generare e presentare una nuova domanda
-function mostraDomanda() {
-    if (domandeRimaste > 0) {
-        const index = Math.floor(Math.random() * domande.length);
-        domanda.textContent = domande[index];
+const game_container = document.getElementById('game-container');
+function gameStart(){
+    game_container.classList.remove('hidden');
+    
 
-        let rispostaReal = risposte[index].toLowerCase();
-        console.log(`Risposta Reale${rispostaReal}`);
-
-        // Rimuovi l'ascoltatore dell'evento di invio del modulo prima di aggiungerne uno nuovo
-        form.removeEventListener('submit');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Evita l'invio del modulo
-            verificaRisposta(index); // Passa l'indice della domanda alla funzione di verifica della risposta
-        });
-    } else {
-        console.log('Punteggio finale:');
-        console.log('Giuste', indovinate);
-        console.log('Sbagliate', sbagliate);
-    }
 }
 
-// Funzione per verificare la risposta dell'utente
-function verificaRisposta(index) {
-    let rispostaUtente = rispostaInput.value.trim().toLowerCase();
-    let rispostaReal = risposte[index].toLowerCase();
+function getRandomQuestion() {
+    const domande_rimanenti = document.getElementById('domande_rimanenti');
 
-    console.log(`Risposta Utente: ${rispostaUtente}`);
-    console.log(`Risposta Reale: ${rispostaReal}`);
+    if (questionCount >= maxQuestions) {
 
-    if (rispostaUtente == rispostaReal) {
-        indovinate += 1;
-        console.log('Risposta corretta');
-    } else {
-        sbagliate += 1;
-        console.log('Risposta sbagliata');
+        const messaggio = document.getElementById('messaggio');
+        const img = document.getElementById('imgPunteggio');
+        img.classList.add('h-[350px]');
+        const punteggio = document.getElementById('punteggio');
+        const giusteCell = document.getElementById('giuste');
+        const sbagliateCell = document.getElementById('sbagliate');
+        const buttonGameStart = document.getElementById('gameStart');
+
+        if (giuste >= 0 && giuste <= 3) {
+            messaggio.textContent = `Non sei stato molto bravo!`;
+            img.src = '/plants/peperone_piange.png';
+        } else if (giuste > 3 && giuste < 8) {
+            messaggio.textContent = `Ci sai fare abbastanza con gli ortaggi!`;
+            img.src = 'plants/cocomero_felice.png';
+        } else {
+            messaggio.textContent = `Congratulazioni! Sei un contadino nato!`;
+            img.src = 'assets/contadina.png';
+        }
+
+        buttonGameStart.onclick = null;
+        giusteCell.textContent = giuste;
+        sbagliateCell.textContent = sbagliate;
+        game_container.classList.add('hidden');
+        punteggio.classList.remove('hidden');
+        return;
     }
 
-    domandeRimaste--; // Riduci il numero di domande rimaste
-    console.log("Domande rimaste: " + domandeRimaste);
-
-    // Pulisci l'input e mostra una nuova domanda
-    rispostaInput.value = '';
-    mostraDomanda();
+    domande_rimanenti.textContent = questionCount;
+    currentIndex = Math.floor(Math.random() * domande.length);
+    document.getElementById('question').innerText = domande[currentIndex];
+    questionCount++;
 }
 
-// Avvia il gioco mostrando la prima domanda
-mostraDomanda();
+function checkAnswer() {
+    const userAnswer = document.getElementById('answer').value.trim();
+    if (userAnswer.toLowerCase() === risposte[currentIndex].toLowerCase()) {
+        giuste++;
+        document.getElementById('result').innerText = 'Risposta corretta!';
+        document.getElementById('result').classList.add('text-green-500');
+        document.getElementById('result').classList.remove('text-red-500');
+    } else {
+        sbagliate++;
+        document.getElementById('result').innerText = 'Risposta sbagliata!';
+        document.getElementById('result').classList.add('text-red-500');
+        document.getElementById('result').classList.remove('text-green-500');
+    }
+    document.getElementById('giuste').innerText = giuste;
+    document.getElementById('sbagliate').innerText = sbagliate;
+    document.getElementById('answer').value = '';
+    getRandomQuestion();
+}
+
+window.onload = getRandomQuestion;
 
 
 
-
-// Funzione per generare e presentare una nuova domanda
-// function mostraDomanda() {
-//     if (domandeRimaste > 0) {
-//         const index = Math.floor(Math.random() * domande.length);
-//         domanda.textContent = domande[index];
-
-//         // Rimuovi l'ascoltatore dell'evento di invio del modulo prima di aggiungerne uno nuovo
-//         form.removeEventListener('submit', verificaRisposta);
-//         form.addEventListener('submit', function(e) {
-//             e.preventDefault();
-//             const rispostaUtente = rispostaInput.value.trim().toLowerCase();
-            
-//             // Confronta la risposta dell'utente con quella corretta, assicurandoti che entrambe siano in lettere minuscole
-//             if (rispostaUtente === risposte[index].toLowerCase()) {
-//                 indovinate += 1;
-//                 console.log('giusta');
-//             } else {
-//                 sbagliate += 1;
-//                 console.log('sbagliata');
-//             }
-
-//             domandeRimaste--; // Riduci il numero di domande rimaste
-//             console.log("Domande rimaste: " + domandeRimaste);
-
-//             // Pulisci l'input e mostra una nuova domanda
-//             rispostaInput.value = '';
-//             mostraDomanda();
-//         });
-//     } else {
-//         // Quando il numero di domande è arrivato a 0, mostra il punteggio finale
-//         console.log("Punteggio finale:");
-//         console.log("Domande indovinate: " + indovinate);
-//         console.log("Domande sbagliate: " + sbagliate);
-//     }
-// }
-
-
-// // Funzione per verificare la risposta dell'utente
-// function verificaRisposta(e) {
-//     e.preventDefault();
-//     const rispostaUtente = rispostaInput.value.trim().toLowerCase();
-//     const index = Math.floor(Math.random() * domande.length);
-//     console.log(rispostaUtente);
-//     console.log(risposte[index].toLowerCase());
-//     // Confronta la risposta dell'utente con quella corretta, assicurandoti che entrambe siano in lettere minuscole
-//     if (rispostaUtente === risposte[index].toLowerCase()) {
-//         indovinate += 1;
-//         console.log('giusta');
-//     } else {
-//         sbagliate += 1;
-//         console.log('sbagliata');
-//     }
-
-//     domandeRimaste--; // Riduci il numero di domande rimaste
-//     console.log("Domande rimaste: " + domandeRimaste);
-
-//     // Pulisci l'input e mostra una nuova domanda
-//     rispostaInput.value = '';
-//     mostraDomanda();
-// }
-
-
-// // Avvia il gioco mostrando la prima domanda
-// mostraDomanda();

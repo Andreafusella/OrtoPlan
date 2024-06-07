@@ -245,6 +245,8 @@ function knowRaccolta(piante, piantagione) {
 //mostra messaggio 'al momento non hai piantagioni'
 message_nopiantagioni()
 async function message_nopiantagioni(){
+    const utente = JSON.parse(localStorage.getItem('utente'));
+    console.log(utente.utente.nome);
     const messaggio = document.getElementById('messageNoPiantagione');
     try {
         const res = await fetch(`http://localhost:8000/num_piantagioni?id_utente=${id_utente}`, {
@@ -254,7 +256,10 @@ async function message_nopiantagioni(){
         if (res.status == 201){
             const data = await res.json();
             if (data == 0) {
-                messaggio.textContent = 'Non è presente alcuna piantagione';
+                const noPiantagioni = document.getElementById('noPiantagioni');
+                noPiantagioni.classList.remove('hidden');
+                const nome_utente = document.getElementById('nome_utenteNew');
+                nome_utente.textContent = utente.utente.nome;
                 
             } else {
                 messaggio.classList.add('hidden');

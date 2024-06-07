@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/style/output.css">
 </head>
 <body class="bg-white min-h-screen">
-    <%- include ('components/navbar_home') %>
+    <%- include ('components/navbar') %>
     <div class="flex justify-center items-center">
         <div>
             <div class="md:flex gap-5 items-center justify-center">
@@ -17,21 +17,46 @@
                     <h1 class="text-xl text-black mb-5">E' solamente un errore <span class="text-red-500 font-bold">404!</span></h1>
                     <h1 class="text-xl text-black mb-2">Al momento non riusciamo a trovare la risorsa che stavi cercando</h1>
                     <h1 class="text-xl text-black mb-10">Prenditi una pausa e fai una partita con me a<span class="text-green-500 font-bold"> INDOVINO!</span> </h1>
-                    <button onclick="gameStart()" class="btn btn-primary bg-green-500 text-white border-green-500 hover:border-green-600 hover:bg-green-600">Gioca ora! 🎮</button>
+                    <button id="gameStart" onclick="gameStart()" class="btn btn-primary bg-green-500 text-white border-green-500 hover:border-green-600 hover:bg-green-600">Gioca ora! 🎮</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="game" class="flex justify-center items-center mb-5">
+    <div id="punteggio" class="flex justify-center items-center hidden mb-20">
         <div>
-            <form id="formDomanda">
-                <h1 id="domanda"></h1>
-                <div class="flex gap-5 justify-center items-center">
-                    <input id="risposta" name="risposta" type="text" class=" w-[200px] input input-bordered w-full bg-slate-300 text-black">
-                    <button type="button" class="btn btn-primary text-white">Verifica</button>
+            <div class="flex gap-3 justify-center items-center border-[5px] border-orange-500 rounded-2xl mx-10">
+                <img class="m-auto" id="imgPunteggio">
+                <div class="mr-10">
+                    <h1 id="messaggio" class="text-black font-bold text-3xl w-[300px] text-center"></h1>
+                    <div class="flex gap-5 items-center justify-center mt-5">
+                        <div class="flex justify-center items-center gap-2">
+                            <h1 class="text-xl text-black">Giuste: </h1>
+                            <h1 id="giuste" class="text-green-500 font-bold text-xl"></h1>
+                        </div>
+                        <div class="flex justify-center items-center gap-2">
+                            <h1 class="text-xl text-black">Sbagliate: </h1>
+                            <h2 id="sbagliate" class="text-red-500 font-bold text-xl"></h2>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="bg-white p-8 rounded-lg shadow-md text-center hidden">
+        <div id="question" class="m-auto w-[300px] mb-4 text-xl text-black font-bold">Premi "Inizia" per una nuova domanda</div>
+        <div id="inputAnswer" class="flex gap-3 items-center justify-center">
+            <input id="answer" type="text" class="input input-bordered bg-slate-200 w-[200px] text-black" placeholder="La tua risposta">
+            <button onclick="checkAnswer()" class="btn btn-primary text-white">Controlla</button>
+        </div>
+        <div id="result" class="mt-4 font-bold"></div>
+        <div class="mt-4">
+            <div class="flex items-center justify-center gap-1">
+                <h1>Domanda: </h1>
+                <h1 id="domande_rimanenti"></h1>
+                <h1>/ 10</h1>
+            </div>
         </div>
     </div>
     
