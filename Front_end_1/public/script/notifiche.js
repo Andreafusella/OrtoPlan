@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const id_utente = +utente.id_utente;
 
         findNotifiche();
-        
         async function findNotifiche() {
             const res = await fetch('http://localhost:8000/notifiche', {
                 method: 'POST',
@@ -16,12 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    id_utente
+                    id_utente,
                 }),
             });
 
             if (res.status == 201) {
-                console.log('successo');
+                
                 const notifiche = await res.json();
 
                 const tabella = document.getElementById('tabella');
@@ -41,13 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         imgCell.classList.add('h-10');
                     } else if (notifica.tipo == 2) {
                         imgCell.src = '/assets/pioggia.png';
-                        imgCell.classList.add('h-12')
+                        imgCell.classList.add('h-12');
                     } else if (notifica.tipo == 3) {
                         imgCell.src = '/assets/caldo.png';
-                        imgCell.classList.add('h-12')
+                        imgCell.classList.add('h-12');
                     }else if (notifica.tipo == 4) {
                         imgCell.src = '/assets/pioggia.png';
-                        imgCell.classList.add('h-12')
+                        imgCell.classList.add('h-12');
                     }
 
                     idCell.appendChild(imgCell);
@@ -76,14 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     let data_formattata = `${giorno}/${mese}/${anno}`;
 
                     data_invioCell.textContent = data_formattata;
-                    data_invioCell.classList.add('px-4', 'py-2', 'text-black')
+                    data_invioCell.classList.add('px-4', 'py-2', 'text-black');
 
                     const p = document.createElement('p');
                     const p2 = document.createElement('p');
-                    if (notifica.aperta){
+                    if (notifica.aperta) {
                         p.textContent = '📧';
                         row.classList.add('bg-gray-400');
-                        p.classList.add('h-10')
+                        p.classList.add('h-10');
                     } else {
                         p.textContent = '✉️';
                     }
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         function changeColor(){
                             p.textContent = '📧';
                             row.classList.add('bg-gray-400');
-                            p.classList.add('h-10')
+                            p.classList.add('h-10');
 
                             const divImgNotifica = document.getElementById('imageNotifica');
                             const imgNotifica = divImgNotifica.firstElementChild;
@@ -155,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         "Content-Type": "application/json",
                                     },
                                     body: JSON.stringify({
-                                        id_notifica
+                                        id_notifica,
                                     }),
                                 });
 
@@ -222,9 +221,16 @@ function closeModal() {
 
 async function deleteNotifiche(){
     try {
-
+        const utente = JSON.parse(localStorage.getItem('utente'));
+        id_utente = utente.id_utente;
         const res = await fetch('http://localhost:8000/deleteNotifiche',{
             method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id_utente,
+            }),
         });
 
         if (res.status == 201) {
@@ -239,10 +245,10 @@ async function deleteNotifiche(){
             }
 
             const h1 = document.createElement('h1');
-            if(countNotifiche.count == 1){
-                h1.textContent = `E' stata eliminata 1 notifica`
+            if (countNotifiche.count == 1) {
+                h1.textContent = `E' stata eliminata 1 notifica`;
             } else {
-                h1.textContent = `Sono state elimiante ${countNotifiche.count} notifiche`
+                h1.textContent = `Sono state elimiante ${countNotifiche.count} notifiche`;
             }
             const tabella = document.getElementById('tabella');
             tabella.classList.add('hidden');

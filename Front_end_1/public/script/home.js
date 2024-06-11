@@ -4,21 +4,23 @@ const loginModal = document.querySelector('#login');
 const RegisterForm = document.querySelector('#registerForm');
 const RegisterModal = document.querySelector('#register');
 
+//APERTURA MODAL REGISTRAZIONE
 function openModalRegister(){
   RegisterModal.showModal();
   RegisterForm.reset();
   const inputNome = document.querySelector('#inputNome');
   const inputCognome = document.querySelector('#inputNome');
-  const inputEmail = document.querySelector('#inputNomeRegister');
+  const inputEmail = document.querySelector('#inputEmailRegister');
   const inputPassword = document.querySelector('#inputPasswordRegister');
   const inputRepeatPassword = document.querySelector('#inputRepeatPasswordRegister');
+  const error_email = document.getElementById('error-email');
 
+  error_email.remove();
   inputNome.classList.remove('input-error');
   inputCognome.classList.remove('input-error');
   inputEmail.classList.remove('input-error');
   inputPassword.classList.remove('input-error');
   inputRepeatPassword.classList.remove('input-error');
-  
 }
 
 //APERTURA MODAL LOGIN
@@ -35,10 +37,8 @@ function openModalLogin(){
 
 //LOGIN
 loginForm.addEventListener('submit', async (e) => {
+  
   e.preventDefault();
-
-
-
   const email = e.target.children[1].value;
   const password = e.target.children[3].value;
 
@@ -46,39 +46,45 @@ loginForm.addEventListener('submit', async (e) => {
   console.log(password);
   console.log({email, password});
 
-  const res = await fetch('http://localhost:8000/login', {
-    body: JSON.stringify({
-      email,
-      password,
-    }),
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-    }
-  });
+  try {
 
-  if (res.status !== 200) {
-    console.log('errore');
-    setErrLogin(); 
-    return;
+    const res = await fetch('http://localhost:8000/login', {
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    if (res.status !== 200) {
+      console.log('errore');
+      setErrLogin(); 
+      return;
+    }
+
+    const data = await res.json();
+    console.log(data);
+
+    //puo essere una sessione
+    localStorage.setItem('utente', JSON.stringify(data.utente));
+    localStorage.setItem('token', data.token);
+
+
+    window.location.href = '/piantagione';
+
+  } catch(error) {
+    console.log(error);
   }
 
-  const data = await res.json();
-  console.log(data);
-
-  //puo essere una semi sessione
-  localStorage.setItem('utente', JSON.stringify(data.utente));
-  localStorage.setItem('token', data.token);
-
-
-  window.location.href = '/piantagione';
+  
 })
-
-
 
 //REGISTRAZIONE
 RegisterForm.addEventListener('submit', async (e) => {
-  e.preventDefault()
+  e.preventDefault();
 
   document.querySelectorAll(".error-message").forEach((element) => {
     element.remove();
@@ -87,11 +93,11 @@ RegisterForm.addEventListener('submit', async (e) => {
     element.classList.remove("input-error");
   });
 
-  const nome = e.target.children[1].value
-  const cognome = e.target.children[3].value
-  const email = e.target.children[5].value
-  const password = e.target.children[7].value
-  const conferma_password = e.target.children[9].value
+  const nome = e.target.children[1].value;
+  const cognome = e.target.children[3].value;
+  const email = e.target.children[5].value;
+  const password = e.target.children[7].value;
+  const conferma_password = e.target.children[9].value;
 
   const validation = validate({
     nome,
@@ -141,15 +147,26 @@ RegisterForm.addEventListener('submit', async (e) => {
   });
 
   if(res.status !== 200) {
-    console.log('errore validation');
-    const errore = document.getElementById('error_message');
-    errore.classList.remove('hidden');
-    return
+    const errorData = await res.json();
+    
+    if (errorData.error && errorData.error.email) {
+      const erroreEmail = document.createElement('h1');
+      erroreEmail.id = 'error-email';
+      erroreEmail.classList.add('error-message', 'text-red-500');
+      erroreEmail.textContent = "L'email è già esistente";
+      e.target.children[5].classList.add('input-error');
+      e.target.children[5].parentNode.insertBefore(erroreEmail, e.target.children[5].nextSibling);
+      return
+    } else {
+      const errore = document.getElementById('error_message');
+      errore.classList.remove('hidden');
+      return
+    }
+    
   }
 
   const data = await res.json();
   console.log(data);
-
   localStorage.setItem('utente', JSON.stringify(data.utente));
   localStorage.setItem('token', data.token);
 
@@ -157,11 +174,13 @@ RegisterForm.addEventListener('submit', async (e) => {
 
 })
 
+//imposta errori nel login
 function setErrLogin(){
   const inputEmail = document.querySelector('#inputEmailLogin');
   const inputPassword = document.querySelector('#inputPasswordLogin');
 
-  const p1 = document.querySelector('#errorLoginP')
+  const p1 = document.querySelector('#errorLoginP');
+
   if (p1) {
     p1.remove();
   }
@@ -175,6 +194,7 @@ function setErrLogin(){
   inputPassword.parentNode.insertBefore(p, inputPassword.nextSibling);
 }
 
+//controllo la validation e assegna gli errori
 function checkValidation(validation) {
   Object.keys(validation).forEach((key) => {
     const el = document.querySelector(`input[name=${key}]`);

@@ -14,7 +14,7 @@ validate.validators.userExists = function (value, options, key, attributes) {
       }
     });
     if (user) {
-      res("L'utente è già esistente");
+      res("è gia registrata");
     } else {
       res();
     }

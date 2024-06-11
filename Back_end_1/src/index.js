@@ -1,10 +1,11 @@
 import express from 'express'
 import 'dotenv/config'
-import userRouting from './routing/user.routing.js';
+
 import authRouting from './routing/auth.routing.js';
 import pianteRouting from './routing/piante.routing.js';
 import piantagioneRouting from './routing/piantagione.routing.js';
 import notificheRouting from './routing/notifiche.routing.js';
+import noteRouting from './routing/note.routing.js';
 
 import cors from 'cors';
 import validate from 'validate.js';
@@ -32,11 +33,11 @@ app.get('/', (req, res) => {
     res.send("Entra");
 })
 
-userRouting(app);
 authRouting(app);
 pianteRouting(app);
 piantagioneRouting(app);
 notificheRouting(app);
+noteRouting(app);
 
 
 

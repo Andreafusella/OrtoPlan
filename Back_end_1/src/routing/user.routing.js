@@ -9,28 +9,4 @@ export default function userRouting(app) {
     app.get('/home', isLoggedIn, async (req, res) => {
         //vede cio che scriviamo qui solo quando è loggato
     })
-
-    app.post('modificaUtente', modificaUserValidation, async (req, res) => {
-        const newUser = await prisma.utente.update({
-            where: {
-                id_utente: +req.body.id_utente
-            },
-            data: {
-                nome: req.body.newNome,
-                cognome: req.body.newCognome,
-            }
-        });
-        const newCredenziali = await prisma.credenziali.update({
-            where: {
-                id_utente: +req.body.id_utente
-            },
-            data: {
-                email: req.body.newEmail,
-                password: req.body.newPassword,
-            }
-        })
-
-        res.status(201);
-        res.json ({newUser, newCredenziali});
-    })
 }

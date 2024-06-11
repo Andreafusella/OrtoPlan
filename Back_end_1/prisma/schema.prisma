@@ -14,6 +14,7 @@ model Utente {
   credenziali  Credenziali?
   piantagioni  Piantagione[]
   notifiche    Notifiche[]
+  note         Note[]
 }
 
 model Credenziali {
@@ -73,7 +74,12 @@ model NotificheEliminate {
   data_invio           DateTime
 }
 
-
-
-
+model Note {
+  id_note       Int      @id @default(autoincrement())
+  testo         String
+  id_utente     Int
+  data_creazione DateTime
+  titolo        String
+  utente        Utente   @relation(fields: [id_utente], references: [id_utente], onDelete: Cascade, onUpdate: Cascade)
+}
 

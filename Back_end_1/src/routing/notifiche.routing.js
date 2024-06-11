@@ -272,7 +272,7 @@ export default function notificheRouting(app){
                 let testoNotifica = '';
     
                 if (giorni == 1) {
-                    testoNotifica = `Ricordati di annaffiare la piantagione: ${nome_piantagione} tra ${giorni} giorno`;
+                    testoNotifica = `Ricordati! Tra ${giorni} giorno dovrai annaffiare la piantagione: ${nome_piantagione}`;
                 } else if (giorni == 0) {
                     testoNotifica = `E' il momento di annaffiare la piantagione: ${nome_piantagione}`;
                 }
@@ -421,9 +421,13 @@ export default function notificheRouting(app){
     app.delete('/deleteNotifiche', async (req, res) => {
         try {
             
-            const notifiche = await prisma.notifiche.deleteMany()
+            const notifiche = await prisma.notifiche.deleteMany({
+                where: {
+                    id_utente: +req.body.id_utente,
+                }
+            })
 
-            if(notifiche){
+            if (notifiche) {
                 console.log('elimiante con successo');
                 res.status(201);
                 res.json(notifiche);

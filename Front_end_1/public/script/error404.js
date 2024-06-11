@@ -82,6 +82,7 @@ const risposte = [
     "Beta-carotene",
     "Parthenocarpia"
 ]
+
 let giuste = 0;
 let sbagliate = 0;
 let currentIndex = -1;
@@ -91,8 +92,6 @@ const maxQuestions = 10;
 const game_container = document.getElementById('game-container');
 function gameStart(){
     game_container.classList.remove('hidden');
-    
-
 }
 
 function getRandomQuestion() {
@@ -135,6 +134,7 @@ function getRandomQuestion() {
     questionCount++;
 }
 
+//controlla se la risposta è corretta
 function checkAnswer() {
     const userAnswer = document.getElementById('answer').value.trim();
     if (userAnswer.toLowerCase() === risposte[currentIndex].toLowerCase()) {
@@ -151,9 +151,11 @@ function checkAnswer() {
     document.getElementById('giuste').innerText = giuste;
     document.getElementById('sbagliate').innerText = sbagliate;
     document.getElementById('answer').value = '';
+    //richiama alla fine la funzione per una nuova domanda
     getRandomQuestion();
 }
 
+//al caricamento della pagina genera la prima domanda
 window.onload = getRandomQuestion;
 
 

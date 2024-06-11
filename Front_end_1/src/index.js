@@ -55,6 +55,9 @@ app.get('/error404', (req, res) => {
     res.render('pages/error404');
 })
 
+app.get('/note', (req, res) => {
+    res.render('pages/note');
+})
 
 
 app.listen(3000, () => {

@@ -1,3 +1,4 @@
+//al caricamento della pagina cerca il meteo per 4 città
 document.addEventListener('DOMContentLoaded', async () => {
 
     const apiKey = "30b35159cd1dfce6826a18b5fbbfacfc";
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlOggiNapoli = `http://api.openweathermap.org/data/2.5/weather?q=Napoli&appid=${apiKey}&units=metric`;
     const urlDomaniNapoli = `http://api.openweathermap.org/data/2.5/forecast?q=Napoli&appid=${apiKey}&units=metric`;
 
-
+    //fa la chiamata
     try {
         const [
             responseOggiMilano, responseDomaniMilano,
@@ -27,13 +28,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fetch(urlOggiNapoli), fetch(urlDomaniNapoli),
             ]);
 
-        // if (!responseOggi.ok) {
-        //     throw new Error('Città non trovata');
-        // }
-        // if (!responseDomani.ok) {
-        //     throw new Error('Previsioni non disponibili');
-        // }
-
         const oggiMilano = await responseOggiMilano.json();
         const dataForecastMilano = await responseDomaniMilano.json();
 
@@ -46,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const oggiNapoli = await responseOgginapoli.json();
         const dataForecastNapoli = await responseDomaniNapoli.json();
 
+        //richiama funzione per mostrare a video il meteo
         displayWeather(
             oggiMilano, dataForecastMilano,
             oggiRoma, dataForecastRoma,
@@ -59,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
+//mostra a display il meteo delle 4 città
 function displayWeather(
     oggiMilano, dataForecastMilano,
     oggiRoma, dataForecastRoma,
@@ -79,6 +75,7 @@ function displayWeather(
     tomorrow.setDate(now.getDate() + 1);
     dayAfterTomorrow.setDate(now.getDate() + 2);
 
+    //ricerca tramite find per restituire previsione meteo specifica per quel giorno 
     const domaniMilano = forecastMilano.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
     const dopodomaniMilano = forecastMilano.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
     const domaniRoma = forecastRoma.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
@@ -87,8 +84,6 @@ function displayWeather(
     const dopodomaniPescara = forecastPescara.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
     const domaniNapoli = forecastNapoli.find(f => new Date(f.dt_txt).getDate() === tomorrow.getDate());
     const dopodomaniNapoli = forecastNapoli.find(f => new Date(f.dt_txt).getDate() === dayAfterTomorrow.getDate());
-    console.log(domaniMilano);
-    console.log(dopodomaniMilano);
     milano();
     roma();
     pescara();
@@ -498,6 +493,7 @@ function displayWeather(
 
 const meteoCittaForm = document.getElementById('meteoCittaForm');
 
+//ricerca meteo personalizzato
 meteoCittaForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -558,6 +554,7 @@ meteoCittaForm.addEventListener('submit', async (e) => {
     }
 })
 
+//mostra a display la previsione meteo personalizzata
 function displayWeatherCittaScelta(oggi, dataForecast, citta){
 
     const nomeCitta = document.getElementById('nomeCitta');

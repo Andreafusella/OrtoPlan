@@ -11,9 +11,11 @@
     <%- include ('components/navbar_home') %>
     <div class="m-10 flex flex-col">
         
-        <div class="flex justify-between">
-            <p></p>
-            <button class="btn btn-primary text-white font-bold" onclick="openModalPiantagione()">Nuova Piantagione</button>
+        <div class="md:flex gap-6 justify-end md:m-0 m-auto">
+            
+            <button class="btn btn-primary text-white font-bold mb-3 " onclick="openModalPiantagione()">Nuova Piantagione</button>
+            <a href="/note" class="btn btn-primary text-white font-bold text-3xl bg-green-500 border-green-400 hover:bg-green-500 hover:border-green-500">📝</a>
+            
         </div>
         
         <div id="piantagioni-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 mt-5">

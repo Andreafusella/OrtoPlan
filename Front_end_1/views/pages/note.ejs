@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note</title>
+    <link rel="stylesheet" href="/style/output.css">
+    <link id="icon" rel="icon" type="image/png" href="/assets/logo.png"> 
+</head>
+<body class="bg-white min-h-screen">
+    <%- include ('components/navbar_home') %>
+    <div class="flex gap-5 justify-end mt-10 mb-5 mx-10">
+        <button onclick="openModalNota()" class="btn btn-primary text-white font-bold">Nuova nota <span class="text-2xl">📝</span></button>
+        <button onclick="deleteNota()" class="btn btn-primary bg-red-500 text-white font-bold border-red-500 hover:bg-red-600 hover:border-red-600">Elimina</button>
+    </div>
+    <div id="divEmpty"></div>
+    <!-- messaggio senza note -->
+    <div id="firstNota" class="flex justify-center items-center m-20 hidden">
+        <div class="border-[4px] border-yellow-600 rounded-2xl md:p-5 p-1">
+            <div class="md:flex items-center justify-center">
+                <img src="/assets/taccuino.png" class=" m-auto md:h-[300px] h-[200px]">
+                <div class="text-center w-[300px]">
+                    <h1 class="pb-5 text-black font-bold text-xl">Al momento non è presente nessuna nota</h1>
+                    <h1 class="mb-10 text-orange-300 font-bold">Crea una nuova nota adesso!</h1>
+                    <button onclick="openModalNota()" class="btn btn-primary text-white font-bold mb-3">Nuova nota <span class="text-2xl">📝</span></button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- tabella note -->
+    <div id="tabella" class="relative z-[1] hidden">
+        <div class="flex flex-col items-center justify-center">
+            <div class="m-10 h- bg-gray-300 p-5 rounded-2xl">
+                <table class="table">
+                    <thead class="text-2xl text-white font-bold text-center">
+                        <tr>
+                            <th>Titolo</th>
+                            <th>Data creazione</th>
+                            <th>Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noteTbody" class="text-lg text-slate-900 font-bold text-center">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <dialog id="nuovaNota" class="modal">
+        <div class="modal-box flex flex-col gap-4 bg-slate-200">
+            <h3 class="font-bold text-xl text-black">Nuova nota</h3>
+            <form id="nuovaNotaForm" class="flex flex-col gap-4">
+                <h1 class="text-black">Titolo</h1>
+                <input id="inputTitolo" placeholder="Nome" type="text" name="titolo" class="input input-bordered w-full bg-white">
+                <h1 class="text-black">Contenuto</h1>
+                <textarea id="inputContenuto" placeholder="Scrivi qui la nota" type="text" name="descrizione" class="textarea textarea-bordered w-full bg-white"></textarea>
+                <p id="lunghezza">Caratteri: 0/190</p>
+                <div class="modal-action">
+                    <button type="button" class="btn text-white" onclick="nuovaNota.close()">
+                        Chiudi
+                    </button>
+                    <button type="submit" class="btn btn-primary text-white">Crea</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+
+    <dialog id="notaModal" class="modal">
+        <div class="modal-box flex flex-col gap-4 bg-slate-200">
+            <h3 id="titolo" class="font-bold text-2xl text-black text-center"></h3>
+            <p id="notaText" class="text-lg break-words"></p>
+            <div class="modal-action">
+                <button type="button" class="btn text-white" onclick="notaModal.close()">
+                    Chiudi
+                </button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <%- include ('components/footer') %>
+    <script src="/script/note.js"></script>
+</body>
+</html>

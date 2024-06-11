@@ -1,6 +1,4 @@
 const currentPiantagione = JSON.parse(localStorage.getItem('currentPiantagione'));
-
-
 const n_slot = +currentPiantagione.n_slot;
 const nome = currentPiantagione.nome;
 const id_utente = +currentPiantagione.id_utente;
@@ -9,13 +7,14 @@ const data_inizio = currentPiantagione.data_inizio;
 const id_piantagione = +currentPiantagione.id_piantagione;
 
 
-const confermaDeletePiantagione = document.getElementById('confermaEliminazioneModal')
+const confermaDeletePiantagione = document.getElementById('confermaEliminazioneModal');
 const title = document.getElementById ('title');
 title.textContent = nome;
 
+//funzione per eliminare la piantagione
 async function confermaEliminazione(){
     let textDelete = `Eliminare la piantagione: ${nome}?`;
-    let sceltaDelete = confirm(textDelete)
+    let sceltaDelete = confirm(textDelete);
     if (sceltaDelete) {
         
         const res = await fetch('http://localhost:8000/piantagione', {
@@ -24,7 +23,7 @@ async function confermaEliminazione(){
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                id_piantagione
+                id_piantagione,
             }),
         });
 
@@ -42,6 +41,7 @@ async function confermaEliminazione(){
 
 document.addEventListener('DOMContentLoaded', async() => {
     
+    //funzione per la selezione delle immagini
     function selectImage(arr_img, id_pianta){
         return arr_img[id_pianta - 1];
     }
@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async() => {
 
     acquaCell.textContent = +currentPiantagione.t_acqua;
     raccoltaCell.textContent = +currentPiantagione.t_raccolta;
+
     if (+currentPiantagione.t_acqua >= 2) {
         acquaCell.classList.add('text-cyan-600');
     }else if (+currentPiantagione.t_acqua < 2) {
@@ -167,21 +168,29 @@ document.addEventListener('DOMContentLoaded', async() => {
         }
     }
 
-    const res = await fetch(`http://localhost:8000/getValoriNutrizionali?id_pianta=${id_pianta}`, {
+    try {
+
+        const res = await fetch(`http://localhost:8000/getValoriNutrizionali?id_pianta=${id_pianta}`, {
         method: 'GET',
-    });
+        });
 
-    if (res.status == 201) {
-        const data = await res.json();
+        if (res.status == 201) {
+            const data = await res.json();
 
-        calorie.textContent = data.calorie;
-        grassi.textContent = data.grassi;
-        carboidrati.textContent = data.carboidrati;
-        potassio.textContent = data.potassio;
-        proteine.textContent = data.proteine;
-        vitamine.textContent = data.vitamine;
+            calorie.textContent = data.calorie;
+            grassi.textContent = data.grassi;
+            carboidrati.textContent = data.carboidrati;
+            potassio.textContent = data.potassio;
+            proteine.textContent = data.proteine;
+            vitamine.textContent = data.vitamine;
 
+        }
+
+    } catch(error) {
+        console.log(error);
+        console.log('errore ricerca valori nutrizionali');
     }
+    
 });
 
 
@@ -243,7 +252,7 @@ function displayWeather(oggi, dataForecast, citta) {
         h1.textContent = 'Nuvoloso';
         temp1.textContent = `Temperatura: ${oggi.main.temp} C°`;
 
-    }else if (oggi.weather[0].main == 'Rain'){
+    }else if (oggi.weather[0].main == 'Rain') {
         img1.src = '/meteo/pioggia.png';
         h1.textContent = 'Pioggia';
         temp1.textContent = `Temperatura: ${oggi.main.temp} C°`;
@@ -262,7 +271,7 @@ function displayWeather(oggi, dataForecast, citta) {
         h2.textContent = 'Nuvoloso';
         temp2.textContent = `Temperatura: ${domani.main.temp} C°`;
 
-    }else if (domani.weather[0].main == 'Rain'){
+    }else if (domani.weather[0].main == 'Rain') {
         img2.src = '/meteo/pioggia.png';
         h2.textContent = 'Pioggia';
         temp2.textContent = `Temperatura: ${domani.main.temp} C°`;
@@ -281,7 +290,7 @@ function displayWeather(oggi, dataForecast, citta) {
         h3.textContent = 'Nuvoloso';
         temp3.textContent = `Temperatura: ${dopodomani.main.temp} C°`;
 
-    }else if (dopodomani.weather[0].main == 'Rain'){
+    }else if (dopodomani.weather[0].main == 'Rain') {
         img3.src = '/meteo/pioggia.png';
         h3.textContent = 'Pioggia';
         temp3.textContent = `Temperatura: ${dopodomani.main.temp} C°`;
@@ -303,7 +312,7 @@ function displayWeather(oggi, dataForecast, citta) {
 
 }
 
-function selectImage(arr_img, id_pianta){
+function selectImage(arr_img, id_pianta) {
     return arr_img[id_pianta - 1];
 }
 

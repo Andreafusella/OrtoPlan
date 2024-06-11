@@ -30,44 +30,8 @@
                     <h1 id="n_piantagioni" class="text-black font-bold my-2"></h1>
                 </div>
             </div>
-            <div class="w-full flex items-center justify-center mt-3">
-                <button onclick="openModificaModal()" class="btn btn-primary text-white">Modifica</button>
-            </div>
         </div>
     </div>
-
-    <dialog id="modificaDialog">
-        <div class="modal-box flex flex-col gap-4 bg-slate-200">
-            <h3 class="text-xl text-black">Modifica Utente</h3>
-            <form id="modificaForm" class="flex flex-col gap-4">
-                <div class="flex gap-3">
-                    <div>
-                        <h1>Nome</h1>
-                        <input id="inputNome" placeholder="Nome" type="text" name="nome" class="input input-bordered w-full bg-white text-black">
-                        <h1>Cognome</h1>
-                        <input id="inputCognome" placeholder="Cognome" type="text" name="cognome" class="input input-bordered w-full bg-white text-black">
-                    </div>
-                    <div>
-                        <h1>Email</h1>
-                        <input id="inputEmail" placeholder="email" type="text" name="email" class="input input-bordered w-full bg-white text-black">
-                        <h1>Password</h1>
-                        <input id="inputPassword" placeholder="*******" type="password" name="password" class="input input-bordered w-full bg-white text-black">
-                        <h1>Conferma Password</h1>
-                        <input id="inputRepeatPassword" placeholder="*******" type="password" name="repeatpassword" class="input input-bordered w-full bg-white text-black">
-
-
-                    </div>
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn text-white" onclick="modificaDialog.close()">Chiudi</button>
-                    <button type="submit" class="btn btn-primary text-white">Modifica</button>
-                </div>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
 
     <%- include ('components/footer') %>
     <script src="/script/profilo.js"></script>
