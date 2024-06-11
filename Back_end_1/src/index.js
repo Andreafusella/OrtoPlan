@@ -19,15 +19,6 @@ app.use(cors({
     origin: ['http://127.0.0.1:5501', 'http://127.0.0.1:5500', 'http://localhost:3000'] // autorizza l'entrata solo a quel tipo di indirizzo
 }));
 
-// validate.extend(validate.validators.datetime, {
-//     parse: (value, options ) => {
-//         return +moment.utc(value)
-//     },
-//     format: (value, options) => {
-//         const format = options.dateOnly ? 'YYYY-MM-DD' : 'YYYY-MM-DD hh:mm:ss';
-//         return moment.utc(value).format(format);
-//     }
-// });
 
 app.get('/', (req, res) => {
     res.send("Entra");
