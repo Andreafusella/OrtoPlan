@@ -71,7 +71,7 @@ export default function notificheRouting(app){
                 } else if (+req.body.giorni == 2) {
                     notificaTesto = `Tra 2 giorni devi raccogliere: ${req.body.nome}, della raccolta nella piantagione: ${req.body.nome}`;
                 } else if (+req.body.giorni == 0) {
-                    notificaTesto = `E' ora della raccolta di ${req.body.nome}, nella piantagione: ${req.body.nome}`;
+                    notificaTesto = `E' ora della raccolta nella piantagione: ${req.body.nome}`;
                 }
     
                 if (notificaTesto) {
